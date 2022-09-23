@@ -1,0 +1,14 @@
+{
+  "timeZone": "Asia/Tokyo",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "TwitterClient",
+        "version": "2",
+        "libraryId": "1pMavPxxFHX6USwFx7fI5pWszPnlkjXHcy1H5pLQb0jCkGSrOX6Vgd-AK"
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}
