@@ -43,6 +43,17 @@ export class CheckAccount {
     checkExistAccount(){
         let newID = [];
         let getNum;
+
+        // 削除アカウントを一旦ダミーアカウントに置き換え
+        const twitterStatus = this.dataSheet.getRange(2,14,this.lastRow,1).getValues()
+        for(let i = 0; i < this.lastRow ; i = i + 1){
+            if(twitterStatus[i] != ""){
+                let id = this.dataSheet.getRange(i + 2, 6).getValue();
+                this.dataSheet.getRange(i + 2,15).setValue(id);
+                this.dataSheet.getRange(i + 2,6).setValue("idol_itter");
+            }
+        }
+
         // 100件ごとにTwitter情報取得
         for(let i = 1; i <= this.lastRow; i = i + 100){
             getNum = getNum_100(i, this.lastRow);
@@ -99,6 +110,16 @@ export class CheckAccount {
                         this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
                     } 
                 }
+            }
+        }
+
+        // 置き換えたダミーアカウントを戻す
+        const dummyID = this.dataSheet.getRange(2,15,this.lastRow,1).getValues()
+        for(let i = 0; i < this.lastRow ; i = i + 1){
+            if(dummyID[i] != ""){
+                let id = this.dataSheet.getRange(i + 2, 15).getValue();
+                this.dataSheet.getRange(i + 2,6).setValue(id);
+                this.dataSheet.getRange(i + 2,15).setValue(null);
             }
         }
     }
