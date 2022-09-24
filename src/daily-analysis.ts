@@ -27,20 +27,20 @@ export class DailyAnalysis {
         // 100件ごとにTwitter情報取得
         for(let i = 1; i <= this.lastRow; i = i + 100){
             getNum = getNum_100(i, this.lastRow);
-                if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + 1,6,getNum,1).getValues().join(), i, getNum)){
+                if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + 1,6,getNum,1).getValues().join(), getNum)){
                     // 100件で成功した場合、次のループ
                     continue;
                 }
                 // 100件で失敗した場合、10件ごとに取得
                 for(let j = 0; j < 100 ; j = j + 10){
                     getNum = getNum_10(i, j, this.lastRow);
-                    if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + j + 1,6,getNum,1).getValues().join(), i + j, getNum)){
+                    if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + j + 1,6,getNum,1).getValues().join(), getNum)){
                         // 10件で成功した場合、次のループ
                         continue;
                 }
                 // 10件で失敗した場合、1件ずつ取得
                 for(let k = 0; k < 10; k = k + 1){
-                    if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + j + k + 1,6).getValue(), i + j + k, 1)){
+                    if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + j + k + 1,6).getValue(), 1)){
                         // 1件で成功した場合、次のループ
                         continue;
                     }
@@ -66,7 +66,7 @@ export class DailyAnalysis {
         this.dataSheet.getRange(1,1,this.lastRow,14).createFilter();
     }
 
-    private getTwitterInformation(twitterInfo, twitterIDs, startRow, num){
+    private getTwitterInformation(twitterInfo, twitterIDs, num){
         const response = client.UsersLookupUsernames([twitterIDs],null,"public_metrics,description,verified,protected");
         if(response["errors"]){
           return false;
