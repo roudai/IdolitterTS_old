@@ -8,15 +8,7 @@ export class DailyAnalysis {
     sortData() {
         // データ並び替え
         this.dataSheet.getRange(2,1,this.dataSheet.getLastRow() - 1, this.dataSheet.getLastColumn()).sort([{column: 1, ascending: true},{column: 12, ascending: true}]);
-
-        // 現データコピー
-        if(this.dataSheet.getRange(2,7).getValue() != ""){
-            this.dataSheet.getRange("A:A").copyTo(this.diffSheet.getRange("A:A"));
-            this.dataSheet.getRange("F:I").copyTo(this.diffSheet.getRange("B:E"));
-            this.diffSheet.getRange("A1:E1").setBackground('#adff2f');
-        }
         this.lastRow = this.dataSheet.getLastRow();
-        
         idFix(this.dataSheet, this.lastRow);
     }
 
@@ -51,6 +43,13 @@ export class DailyAnalysis {
                     Logger.log("No." + (i + j + k + 1) + " " + pastTwitterID);
                 }
             }
+        }
+
+        // 現データコピー
+        if(this.dataSheet.getRange(2,7).getValue() != ""){
+          this.dataSheet.getRange("A:A").copyTo(this.diffSheet.getRange("A:A"));
+          this.dataSheet.getRange("F:I").copyTo(this.diffSheet.getRange("B:E"));
+          this.diffSheet.getRange("A1:E1").setBackground('#adff2f');
         }
 
         // 現データ削除
