@@ -39,3 +39,27 @@ function idFix(dataSheet: any, lastRow: number){
     }
     dataSheet.getRange(2, 6, lastRow - 1).setValues(id);
 }
+
+function idBackup(dataSheet: any, lastRow: number) {
+    // 削除アカウントを一旦ダミーアカウントに置き換え
+    const twitterStatus = dataSheet.getRange(2,14,lastRow,1).getValues()
+    for(let i = 0; i < lastRow ; i = i + 1){
+        if(twitterStatus[i] != ""){
+            let id = dataSheet.getRange(i + 2, 6).getValue();
+            dataSheet.getRange(i + 2,15).setValue(id);
+            dataSheet.getRange(i + 2,6).setValue("idol_itter");
+        }
+    }
+}
+
+function idUndo(dataSheet: any, lastRow: number) {
+    // 置き換えたダミーアカウントを戻す
+    const dummyID = dataSheet.getRange(2,15,lastRow,1).getValues()
+    for(let i = 0; i < lastRow ; i = i + 1){
+        if(dummyID[i] != ""){
+            let id = dataSheet.getRange(i + 2, 15).getValue();
+            dataSheet.getRange(i + 2,6).setValue(id);
+            dataSheet.getRange(i + 2,15).setValue(null);
+        }
+    }
+}
