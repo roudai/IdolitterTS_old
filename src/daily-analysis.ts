@@ -15,14 +15,8 @@ export class DailyAnalysis {
             this.dataSheet.getRange("F:I").copyTo(this.diffSheet.getRange("B:E"));
             this.diffSheet.getRange("A1:E1").setBackground('#adff2f');
         }
-
-        　// 最終行取得、現データ削除
         this.lastRow = this.dataSheet.getLastRow();
-        if(this.dataSheet.getFilter()){
-            this.dataSheet.getFilter().remove();
-        }
-        this.dataSheet.getRange(2,7,this.lastRow - 1,7).clearContent();
-
+        
         idFix(this.dataSheet, this.lastRow);
     }
 
@@ -58,6 +52,13 @@ export class DailyAnalysis {
                 }
             }
         }
+
+        // 現データ削除
+        if(this.dataSheet.getFilter()){
+            this.dataSheet.getFilter().remove();
+        }
+        this.dataSheet.getRange(2,7,this.lastRow - 1,7).clearContent();
+
         // 全データ貼り付け
         this.dataSheet.getRange(2,7,this.lastRow - 1,7).setValues(twitterInfo);
       
