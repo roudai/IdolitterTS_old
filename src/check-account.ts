@@ -23,6 +23,7 @@ export class CheckAccount {
                 if(this.getTwitterPass(String(twitterID[i]))){
                     // アカウントが存在した場合、削除を取り消し
                     this.dataSheet.getRange(i + 2,14).setValue(null);
+                    this.dataSheet.getRange(i + 2,1,1,12).setBackground(null);
             
                     let response = client.UsersLookupUsernames([twitterID[i]])
                     let twitterName = response["data"][0]["name"];
@@ -71,29 +72,31 @@ export class CheckAccount {
                     let group = this.dataSheet.getRange(i + j + k + 1,1,1,1).getValue();
                     let userID = this.dataSheet.getRange(i + j + k + 1,12,1,1).getValue();
                     if(userID){
-                    if(this.getTwitterChange(userID, newID)){
-                        if(nameGroupMatch(twitterName,group)){
-                            client.postTweet("【ユーザー名変更】" + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
-                        }else{
-                            client.postTweet("【ユーザー名変更】" + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]); 
+                        if(this.getTwitterChange(userID, newID)){
+                            if(nameGroupMatch(twitterName,group)){
+                                client.postTweet("【ユーザー名変更】" + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
+                            }else{
+                                client.postTweet("【ユーザー名変更】" + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]); 
+                            }
+                            this.dataSheet.getRange(i + j + k + 1,6,1,1).setValue(newID[0]);
+                            newID = [];
+                        } else {
+                            if(nameGroupMatch(twitterName,group)){
+                                client.postTweet("【アカウント削除】" + twitterName + ' ' + twitterID);
+                            }else{
+                                client.postTweet("【アカウント削除】" + twitterName + ' (' + group + ') ' + twitterID);
+                            }
+                            this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("削除");
+                            this.dataSheet.getRange(i + j + k + 1,1,1,12).setBackground('#00ffff');
                         }
-                        this.dataSheet.getRange(i + j + k + 1,6,1,1).setValue(newID[0]);
-                        newID = [];
-                    } else {
+                    }else{
                         if(nameGroupMatch(twitterName,group)){
-                            client.postTweet("【アカウント削除】" + twitterName + ' ' + twitterID);
+                            client.postTweet("【アカウント所在不明】" + twitterName + ' ' + twitterID);
                         }else{
-                            client.postTweet("【アカウント削除】" + twitterName + ' (' + group + ') ' + twitterID);
+                            client.postTweet("【アカウント所在不明】" + twitterName + ' (' + group + ') ' + twitterID);
                         }
-                        this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("削除");
-                    }
-                    }else{
-                    if(nameGroupMatch(twitterName,group)){
-                        client.postTweet("【アカウント所在不明】" + twitterName + ' ' + twitterID);
-                    }else{
-                        client.postTweet("【アカウント所在不明】" + twitterName + ' (' + group + ') ' + twitterID);
-                    }
-                    this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("不明");
+                        this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("不明");
+                        this.dataSheet.getRange(i + j + k + 1,1,1,12).setBackground('#00ffff');
                     } 
                 }
             }
