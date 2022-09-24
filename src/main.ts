@@ -26,8 +26,9 @@ function checkAccount() {
 function dailyAnalysis() {
     let dailyAnalysis = new DailyAnalysis(dataSheet, diffSheet);
     let checkAccount = new CheckAccount(dataSheet);
-    dailyAnalysis.sortData();
+    checkAccount.sortData();
     checkAccount.checkDeleteAccount();
+    dailyAnalysis.sortData();
     dailyAnalysis.getAllInformation();
     dailyAnalysis.dailyAnalysis();
     dailyAnalysis.tweetRanking("follower");
