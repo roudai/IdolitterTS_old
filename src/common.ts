@@ -35,7 +35,7 @@ function getNum_10(i, j, lastRow){
 function idFix(dataSheet: any, lastRow: number){
     let id: any[] = new Array();
     for (var i = 1; i <= lastRow - 1; i = i + 1) {
-        id.push([dataSheet.getRange(i + 1, 6).getValue().trim()]);
+        id.push([dataSheet.getRange(i + 1, 6).getValue().replace(/[\s\t\n,\.~!@#\$%\^&\*\(\)\+\-=\{\}\[\]:;"'<>?\\\/\|]/g, "")]);
     }
     dataSheet.getRange(2, 6, lastRow - 1).setValues(id);
 }
