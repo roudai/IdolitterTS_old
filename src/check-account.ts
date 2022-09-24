@@ -23,7 +23,7 @@ export class CheckAccount {
                 if(this.getTwitterPass(String(twitterID[i]))){
                     // アカウントが存在した場合、削除を取り消し
                     this.dataSheet.getRange(i + 2,14).setValue(null);
-                    this.dataSheet.getRange(i + 2,1,1,12).setBackground(null);
+                    this.dataSheet.getRange(i + 2,1,1,14).setBackground(null);
             
                     let response = client.UsersLookupUsernames([twitterID[i]])
                     let twitterName = response["data"][0]["name"];
