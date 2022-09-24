@@ -22,6 +22,8 @@ export class DailyAnalysis {
             this.dataSheet.getFilter().remove();
         }
         this.dataSheet.getRange(2,7,this.lastRow - 1,7).clearContent();
+
+        idFix(this.dataSheet, this.lastRow);
     }
 
     getAllInformation() {
