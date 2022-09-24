@@ -9,6 +9,7 @@ export class CheckAccount {
         // データ並び替え
         this.dataSheet.getRange(2,1,this.dataSheet.getLastRow() - 1, this.dataSheet.getLastColumn()).sort([{column: 1, ascending: true},{column: 12, ascending: true}]);
         this.lastRow = this.dataSheet.getLastRow();
+        idFix(this.dataSheet, this.lastRow);
     }
 
     // 削除アカウントのチェック
