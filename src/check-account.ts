@@ -87,7 +87,7 @@ export class CheckAccount {
                                 client.postTweet("【アカウント削除】" + twitterName + ' (' + group + ') ' + twitterID);
                             }
                             this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("削除");
-                            this.dataSheet.getRange(i + j + k + 1,1,1,12).setBackground('#00ffff');
+                            this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
                         }
                     }else{
                         if(nameGroupMatch(twitterName,group)){
@@ -96,7 +96,7 @@ export class CheckAccount {
                             client.postTweet("【アカウント所在不明】" + twitterName + ' (' + group + ') ' + twitterID);
                         }
                         this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("不明");
-                        this.dataSheet.getRange(i + j + k + 1,1,1,12).setBackground('#00ffff');
+                        this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
                     } 
                 }
             }

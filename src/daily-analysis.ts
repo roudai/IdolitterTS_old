@@ -46,7 +46,7 @@ export class DailyAnalysis {
                     }
                     // 1件で失敗した場合、nullをプッシュ、ログ出力
                     twitterInfo.push([null,null,null,null,null,null,null])
-                    this.dataSheet.getRange(i + j + k + 1,1,1,12).setBackground('#00ffff');
+                    this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
                     const pastTwitterID = this.dataSheet.getRange(i + j + k　+ 1,6).getValue()
                     Logger.log("No." + (i + j + k + 1) + " " + pastTwitterID);
                 }
