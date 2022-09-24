@@ -25,9 +25,6 @@ function checkAccount() {
 // アカウント情報取得、データ集計、ランキングツイート
 function dailyAnalysis() {
     let dailyAnalysis = new DailyAnalysis(dataSheet, diffSheet);
-    let checkAccount = new CheckAccount(dataSheet);
-    checkAccount.sortData();
-    checkAccount.checkDeleteAccount();
     dailyAnalysis.sortData();
     dailyAnalysis.getAllInformation();
     dailyAnalysis.dailyAnalysis();
