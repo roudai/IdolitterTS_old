@@ -16,6 +16,8 @@ export class DailyAnalysis {
         let twitterInfo: any[] = new Array();
         let getNum: number;
 
+        idBackup(this.dataSheet, this.lastRow);
+
         // 100件ごとにTwitter情報取得
         for(let i = 1; i <= this.lastRow; i = i + 100){
             getNum = getNum_100(i, this.lastRow);
@@ -45,6 +47,8 @@ export class DailyAnalysis {
             }
         }
 
+        idUndo(this.dataSheet, this.lastRow);
+
         // 現データコピー
         if(this.dataSheet.getRange(2,7).getValue() != ""){
           this.dataSheet.getRange("A:A").copyTo(this.diffSheet.getRange("A:A"));
@@ -60,7 +64,15 @@ export class DailyAnalysis {
 
         // 全データ貼り付け
         this.dataSheet.getRange(2,7,this.lastRow - 1,7).setValues(twitterInfo);
-      
+
+        // ダミー情報の削除
+        const dummyID = this.dataSheet.getRange(2,7,this.lastRow,1).getValues()
+        for(let i = 0; i < this.lastRow ; i = i + 1){
+            if(dummyID[i] == "Idolitter"){
+                this.dataSheet.getRange(i + 2,7,1,7).clearContent();
+            }
+        }
+
         // フィルター作成
         this.dataSheet.getRange(1,1,this.lastRow,14).createFilter();
     }
