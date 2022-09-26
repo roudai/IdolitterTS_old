@@ -136,50 +136,68 @@ export class DailyAnalysis {
     }
 
     tweetRanking(type){
-        const date = new Date();
-        const today = (date.getMonth() + 1) + "月" + (date.getDate() - 1) + "日";
-      
-        let title,group,name,increase;
-        if(type == "follower"){
-          title = "【" + today + " フォロワー数増ランキング】" + "\n"
-          group = this.diffSheet.getRange("I2:I11").getValues();
-          name = this.diffSheet.getRange("K2:K11").getValues();
-          increase = this.diffSheet.getRange("N2:N11").getValues();
-        }else if(type == "tweet"){
-          title = "【" + today + " ツイート数ランキング】" + "\n"
-          group = this.diffSheet.getRange("P2:P11").getValues();
-          name = this.diffSheet.getRange("R2:R11").getValues();
-          increase =this. diffSheet.getRange("U2:U11").getValues();
-        }
-      
-        let tweetId,response,tweet,rename,reincrease;
-        for(let i = 0; i < 10; i++){
-          if(!tweet){
-            tweet = title;
-          }
-          rename = String(name[i]).replace("@"," ").replace("＠"," ");
-          if(type == "follower"){
-            reincrease = increase[i] + "人";
-          }else if(type == "tweet"){
-            reincrease = increase[i];
-          }
-          if(nameGroupMatch(name[i],group[i])){
-            tweet = tweet + (i + 1) + "位 " + reincrease + " " + rename + "\n";
-          }else{
-            tweet = tweet + (i + 1) + "位 " + reincrease + " " + rename + " (" + group[i] + ")" + "\n";
-          }
-          if(tweet.length > 140){
-            tweet = tweet.slice(0,tweet.indexOf((i + 1) + "位 "));
-            if(tweetId == ""){
-              response = client.postTweet(tweet);
-            }else{
-              response = client.postTweet(tweet, tweetId);
-            }
-            tweetId = response["data"]["id"];
-            tweet = "";
-            i = i - 1;
-          }
-        }
-        client.postTweet(tweet, tweetId);
+      const date = new Date();
+      const today = (date.getMonth() + 1) + "月" + (date.getDate() - 1) + "日";
+    
+      let title,group,name,before,after,increase;
+      if(type == "follower"){
+        title = "【" + today + " フォロワー数増ランキング】" + "\n"
+        group = this.diffSheet.getRange("I2:I30").getValues();
+        name = this.diffSheet.getRange("K2:K30").getValues();
+        before = this.diffSheet.getRange("L2:L30").getValues();
+        after = this.diffSheet.getRange("M2:M30").getValues();
+        increase = this.diffSheet.getRange("N2:N30").getValues();
+      }else if(type == "tweet"){
+        title = "【" + today + " ツイート数ランキング】" + "\n"
+        group = this.diffSheet.getRange("P2:P30").getValues();
+        name = this.diffSheet.getRange("R2:R30").getValues();
+        before = this.diffSheet.getRange("S2:S30").getValues();
+        after = this.diffSheet.getRange("T2:T30").getValues();
+        increase =this. diffSheet.getRange("U2:U30").getValues();
       }
+    
+      let tweetId,response,tweet,rename,reincrease;
+      let rank:number = 1;
+      for(let i = 0; i < 30; i++){
+        // 10位まで終わったら終了
+        if( rank > 10 ){
+          break;
+        }
+        // 増加率が8倍以上の場合、イレギュラーデータとしてスキップ
+        if( after[i] / before[i] >= 8) {
+          continue;
+        }
+        
+        if(!tweet){
+          tweet = title;
+        }
+        rename = String(name[i]).replace("@"," ").replace("＠"," ");
+        if(type == "follower"){
+          reincrease = increase[i] + "人";
+        }else if(type == "tweet"){
+          reincrease = increase[i];
+        }
+        
+        if(nameGroupMatch(name[i],group[i])){
+          tweet = tweet + rank + "位 " + reincrease + " " + rename + "\n";
+        }else{
+          tweet = tweet + rank + "位 " + reincrease + " " + rename + " (" + group[i] + ")" + "\n";
+        }
+        
+        if(tweet.length > 140){
+          tweet = tweet.slice(0,tweet.indexOf(rank + "位 "));
+          if(tweetId == ""){
+            response = client.postTweet(tweet);
+          }else{
+            response = client.postTweet(tweet, tweetId);
+          }
+          tweetId = response["data"]["id"];
+          tweet = "";
+          i = i - 1;
+          continue;
+        }
+        rank = rank + 1;
+      }
+      client.postTweet(tweet, tweetId);
+    }
 }
