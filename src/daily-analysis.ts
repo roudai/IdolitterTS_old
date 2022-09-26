@@ -137,18 +137,18 @@ export class DailyAnalysis {
 
   tweetRanking(type){
     const date = new Date();
-    const today = (date.getMonth() + 1) + "月" + (date.getDate() - 1) + "日";
+    const today = dayjs.dayjs().subtract(1,'day').format('YYYY年MM月DD日') + "（" + dayjs.dayjs().locale('ja').format('dd') + "）";
   
     let title,group,name,before,after,increase;
     if(type == "follower"){
-      title = "【" + today + " フォロワー数増ランキング】" + "\n"
+      title = "【" + today + "フォロワー数増ランキング】" + "\n"
       group = this.diffSheet.getRange("I2:I30").getValues();
       name = this.diffSheet.getRange("K2:K30").getValues();
       before = this.diffSheet.getRange("L2:L30").getValues();
       after = this.diffSheet.getRange("M2:M30").getValues();
       increase = this.diffSheet.getRange("N2:N30").getValues();
     }else if(type == "tweet"){
-      title = "【" + today + " ツイート数ランキング】" + "\n"
+      title = "【" + today + "ツイート数ランキング】" + "\n"
       group = this.diffSheet.getRange("P2:P30").getValues();
       name = this.diffSheet.getRange("R2:R30").getValues();
       before = this.diffSheet.getRange("S2:S30").getValues();

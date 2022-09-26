@@ -6,6 +6,11 @@
         "userSymbol": "TwitterClient",
         "version": "2",
         "libraryId": "1pMavPxxFHX6USwFx7fI5pWszPnlkjXHcy1H5pLQb0jCkGSrOX6Vgd-AK"
+      },
+      {
+        "userSymbol": "dayjs",
+        "version": "1",
+        "libraryId": "1ShsRhHc8tgPy5wGOzUvgEhOedJUQD53m-gd8lG2MOgs-dXC_aCZn9lFB"
       }
     ]
   },
