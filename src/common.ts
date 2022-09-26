@@ -36,7 +36,7 @@ function idFix(dataSheet: any, lastRow: number){
     let id: any[] = new Array();
     id = this.dataSheet.getRange(2, 6, lastRow - 1, 1).getValues();
     for (let i = 0; i < id.length; i++) {
-      id[i][0] = id[i][0].replace(/[\s\t\n,\.~!@#\$%\^&\*\(\)\+\-=\{\}\[\]:;"'<>?\\\/\|]/g, "");
+      id[i][0] = id[i][0].replace(/[\s\t\n -/:-@[-^\`{-~]/g, "");
     }
     dataSheet.getRange(2, 6, lastRow - 1).setValues(id);
 }
