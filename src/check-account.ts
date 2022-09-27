@@ -46,67 +46,69 @@ export class CheckAccount {
 
         idBackup(this.dataSheet, this.lastRow);
 
-        // 100件ごとにTwitter情報取得
-        for(let i = 1; i <= this.lastRow; i = i + 100){
-            getNum = getNum_100(i, this.lastRow);
-            if(this.getTwitterPass(this.dataSheet.getRange(i + 1,6,getNum,1).getValues().join())){
-                // 100件で成功した場合、次のループ
-                continue;
-            }
-            // 100件で失敗した場合、10件ごとに取得
-            for(let j = 0; j < 100 ; j = j + 10){
-                getNum = getNum_10(i, j, this.lastRow);
-                if(this.getTwitterPass(this.dataSheet.getRange(i + j + 1,6,getNum,1).getValues().join())){
-                    // 10件で成功した場合、次のループ
+        try{
+            // 100件ごとにTwitter情報取得
+            for(let i = 1; i <= this.lastRow; i = i + 100){
+                getNum = getNum_100(i, this.lastRow);
+                if(this.getTwitterPass(this.dataSheet.getRange(i + 1,6,getNum,1).getValues().join())){
+                    // 100件で成功した場合、次のループ
                     continue;
                 }
-                // 10件で失敗した場合、1件ずつ取得
-                for(let k = 0; k < 10; k = k + 1){
-                    if(this.getTwitterPass(this.dataSheet.getRange(i + j + k + 1,6).getValue())){
-                        // 1件で成功した場合、次のループ
+                // 100件で失敗した場合、10件ごとに取得
+                for(let j = 0; j < 100 ; j = j + 10){
+                    getNum = getNum_10(i, j, this.lastRow);
+                    if(this.getTwitterPass(this.dataSheet.getRange(i + j + 1,6,getNum,1).getValues().join())){
+                        // 10件で成功した場合、次のループ
                         continue;
                     }
-                    if(this.dataSheet.getRange(i + j + k + 1,14,1,1).getValue()){
-                        // ツイート済みの場合、次のループ
-                        continue;
-                    }
-                    let twitterID = this.dataSheet.getRange(i + j + k + 1,6,1,1).getValue();
-                    let twitterName = this.dataSheet.getRange(i + j + k + 1,7,1,1).getValue();
-                    let group = this.dataSheet.getRange(i + j + k + 1,1,1,1).getValue();
-                    let userID = this.dataSheet.getRange(i + j + k + 1,12,1,1).getValue();
-                    if(userID){
-                        if(this.getTwitterChange(userID, newID)){
-                            if(nameGroupMatch(twitterName,group)){
-                                client.postTweet("【ユーザー名変更】" + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
-                            }else{
-                                client.postTweet("【ユーザー名変更】" + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]); 
-                            }
-                            this.dataSheet.getRange(i + j + k + 1,6,1,1).setValue(newID[0]);
-                            newID = [];
-                        } else {
-                            if(nameGroupMatch(twitterName,group)){
-                                client.postTweet("【アカウント削除】" + twitterName + ' ' + twitterID);
-                            }else{
-                                client.postTweet("【アカウント削除】" + twitterName + ' (' + group + ') ' + twitterID);
-                            }
-                            this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("削除");
-                            this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
+                    // 10件で失敗した場合、1件ずつ取得
+                    for(let k = 0; k < 10; k = k + 1){
+                        if(this.getTwitterPass(this.dataSheet.getRange(i + j + k + 1,6).getValue())){
+                            // 1件で成功した場合、次のループ
+                            continue;
                         }
-                    }else{
-                        if(nameGroupMatch(twitterName,group)){
-                            client.postTweet("【アカウント所在不明】" + twitterName + ' ' + twitterID);
+                        if(this.dataSheet.getRange(i + j + k + 1,14,1,1).getValue()){
+                            // ツイート済みの場合、次のループ
+                            continue;
+                        }
+                        let twitterID = this.dataSheet.getRange(i + j + k + 1,6,1,1).getValue();
+                        let twitterName = this.dataSheet.getRange(i + j + k + 1,7,1,1).getValue();
+                        let group = this.dataSheet.getRange(i + j + k + 1,1,1,1).getValue();
+                        let userID = this.dataSheet.getRange(i + j + k + 1,12,1,1).getValue();
+                        if(userID){
+                            if(this.getTwitterChange(userID, newID)){
+                                if(nameGroupMatch(twitterName,group)){
+                                    client.postTweet("【ユーザー名変更】" + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
+                                }else{
+                                    client.postTweet("【ユーザー名変更】" + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]); 
+                                }
+                                this.dataSheet.getRange(i + j + k + 1,6,1,1).setValue(newID[0]);
+                                newID = [];
+                            } else {
+                                if(nameGroupMatch(twitterName,group)){
+                                    client.postTweet("【アカウント削除】" + twitterName + ' ' + twitterID);
+                                }else{
+                                    client.postTweet("【アカウント削除】" + twitterName + ' (' + group + ') ' + twitterID);
+                                }
+                                this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("削除");
+                                this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
+                            }
                         }else{
-                            client.postTweet("【アカウント所在不明】" + twitterName + ' (' + group + ') ' + twitterID);
-                        }
-                        this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("不明");
-                        this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
-                    } 
+                            if(nameGroupMatch(twitterName,group)){
+                                client.postTweet("【アカウント所在不明】" + twitterName + ' ' + twitterID);
+                            }else{
+                                client.postTweet("【アカウント所在不明】" + twitterName + ' (' + group + ') ' + twitterID);
+                            }
+                            this.dataSheet.getRange(i + j + k + 1,14,1,1).setValue("不明");
+                            this.dataSheet.getRange(i + j + k + 1,1,1,14).setBackground('#00ffff');
+                        } 
+                    }
                 }
-            }
+            }   
+        } finally {
+            // 置き換えたダミーアカウントを戻す
+            idUndo(this.dataSheet, this.lastRow);
         }
-
-        // 置き換えたダミーアカウントを戻す
-        idUndo(this.dataSheet, this.lastRow);
     }
      
     private getTwitterPass(twitterIDs){

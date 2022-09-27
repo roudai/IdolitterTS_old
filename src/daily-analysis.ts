@@ -18,8 +18,9 @@ export class DailyAnalysis {
 
       idBackup(this.dataSheet, this.lastRow);
 
-      // 100件ごとにTwitter情報取得
-      for(let i = 1; i <= this.lastRow; i = i + 100){
+      try{
+        // 100件ごとにTwitter情報取得
+        for(let i = 1; i <= this.lastRow; i = i + 100){
           getNum = getNum_100(i, this.lastRow);
               if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + 1,6,getNum,1).getValues().join(), getNum)){
                   // 100件で成功した場合、次のループ
@@ -45,9 +46,10 @@ export class DailyAnalysis {
                   Logger.log("No." + (i + j + k + 1) + " " + pastTwitterID);
               }
           }
+        }
+      } finally {
+        idUndo(this.dataSheet, this.lastRow);
       }
-
-      idUndo(this.dataSheet, this.lastRow);
 
       // 現データコピー
       if(this.dataSheet.getRange(2,7).getValue() != ""){
