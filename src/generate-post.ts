@@ -10,7 +10,7 @@ export class GeneratePost {
 
     // アイドルを抽出する
     selectIdol() {
-        const rand = Math.floor(Math.random() * (this.dataSheet!.getLastRow() - 2) + 2);
+        const rand = Math.floor(Math.random() * (this.dataSheet!.getLastRow() - 1) + 2);
 
         this.group = this.dataSheet!.getRange(rand,1).getValue()
         this.twitterID = this.dataSheet!.getRange(rand,6).getValue()
