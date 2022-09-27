@@ -139,7 +139,7 @@ export class DailyAnalysis {
 
   tweetRanking(type){
     const date = new Date();
-    const today = dayjs.dayjs().subtract(1,'day').format('YYYY年MM月DD日') + "（" + dayjs.dayjs().locale('ja').format('dd') + "）";
+    const today = dayjs.dayjs().subtract(1,'day').format('MM月DD日') + "（" + dayjs.dayjs().locale('ja').format('dd') + "）";
   
     let title,group,name,before,after,increase;
     if(type == "follower"){
