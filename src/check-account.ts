@@ -26,8 +26,8 @@ export class CheckAccount {
                     this.dataSheet.getRange(i + 2,1,1,14).setBackground(null);
             
                     let response = client.UsersLookupUsernames([twitterID[i]])
-                    let twitterName = response["data"][0]["name"];
-                    let group = this.dataSheet.getRange(i + 2,1).getValue();
+                    let twitterName = nameReplace(response["data"][0]["name"]);
+                    let group = nameReplace(this.dataSheet.getRange(i + 2,1).getValue());
             
                     if(nameGroupMatch(twitterName,group)){
                         client.postTweet("【アカウント復活】" + twitterName + ' ' + twitterID[i]);
@@ -72,8 +72,8 @@ export class CheckAccount {
                             continue;
                         }
                         let twitterID = this.dataSheet.getRange(i + j + k + 1,6,1,1).getValue();
-                        let twitterName = this.dataSheet.getRange(i + j + k + 1,7,1,1).getValue();
-                        let group = this.dataSheet.getRange(i + j + k + 1,1,1,1).getValue();
+                        let twitterName = nameReplace(this.dataSheet.getRange(i + j + k + 1,7,1,1).getValue());
+                        let group = nameReplace(this.dataSheet.getRange(i + j + k + 1,1,1,1).getValue());
                         let userID = this.dataSheet.getRange(i + j + k + 1,12,1,1).getValue();
                         if(userID){
                             if(this.getTwitterChange(userID, newID)){

@@ -9,7 +9,11 @@ function nameGroupMatch(name, group) {
     }
     return false;
 }
-  
+
+function nameReplace(name) {
+    return replaceFullToHalf(name).replace("@"," ");
+}
+
 // 全角→半角(英数字)
 function replaceFullToHalf(str){
     return str.replace(/[！-～]/g, function(s){

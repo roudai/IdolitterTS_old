@@ -12,8 +12,8 @@ export class GeneratePost {
     selectIdol() {
         const rand = Math.floor(Math.random() * (this.dataSheet!.getLastRow() - 1) + 2);
 
-        this.group = this.dataSheet!.getRange(rand,1).getValue()
-        this.twitterID = this.dataSheet!.getRange(rand,6).getValue()
+        this.group = nameReplace(this.dataSheet!.getRange(rand,1).getValue());
+        this.twitterID = this.dataSheet!.getRange(rand,6).getValue();
     }
 
     // 対象TwitterIDの抽出、ツイート内容を作る
@@ -21,7 +21,7 @@ export class GeneratePost {
         const response = client.UsersLookupUsernames([this.twitterID],"pinned_tweet_id");
 
         this.userID = response["data"][0]["id"];
-        const name = response["data"][0]["name"].replace("@"," ").replace("＠"," ");
+        const name = nameReplace(response["data"][0]["name"]);
         const pinned_tweet_id = response["data"][0]["pinned_tweet_id"];
 
         let tweet;
