@@ -174,7 +174,7 @@ export class DailyAnalysis {
       if(!tweet){
         tweet = title;
       }
-      rename = String(name[i]).replace("@"," ").replace("＠"," ");
+      rename = nameReplace(String(name[i]));
       if(type == "follower"){
         reincrease = increase[i] + "人";
       }else if(type == "tweet"){
