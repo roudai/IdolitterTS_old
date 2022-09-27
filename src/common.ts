@@ -2,16 +2,21 @@ function nameGroupMatch(name, group) {
     name = String(name);
     group = String(group);
 
-    if(name.match(group)){
-        return true;
-    }else if(name.match(group.replace(" ","").replace("　",""))){
-        return true;
-    }else if(name.replace(" ","").replace("　","").match(group)){
+    if(name.replace(/\s/g, "").match(group.replace(/\s/g, "")) ||
+       replaceFullToHalf(name).match(replaceFullToHalf(group)) ||
+       name.replace("たち", "達").replace("...", "…").match(group)){
         return true;
     }
     return false;
-    }
+}
   
+// 全角→半角(英数字)
+function replaceFullToHalf(str){
+    return str.replace(/[！-～]/g, function(s){
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+}
+
 function getNum_100(i, lastRow){
     if(lastRow - i - 1 >= 100 || lastRow % 100 == 1){
         return 100;
