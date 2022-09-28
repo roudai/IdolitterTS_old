@@ -21,6 +21,10 @@ export class DailyAnalysis {
       try{
         // 100件ごとにTwitter情報取得
         for(let i = 1; i <= this.lastRow; i = i + 100){
+          // 100の倍数件データがある場合異常終了するための対応
+            if(i == this.lastRow) {
+              break;
+          }
           getNum = getNum_100(i, this.lastRow);
               if(this.getTwitterInformation(twitterInfo, this.dataSheet.getRange(i + 1,6,getNum,1).getValues().join(), getNum)){
                   // 100件で成功した場合、次のループ
