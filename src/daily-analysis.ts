@@ -111,7 +111,7 @@ export class DailyAnalysis {
     }
 
     for (let i = 0; i < num; i++) {
-      const name = response['data'][i]['name'];
+      const name = response['data'][i]['name'].replace(/[\r\n]+/g, ' ');
       const followers_count = response['data'][i]['public_metrics']['followers_count'];
       const tweet_count = response['data'][i]['public_metrics']['tweet_count'];
       let verified = response['data'][i]['verified'];
