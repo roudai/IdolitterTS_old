@@ -101,8 +101,13 @@ export class CheckAccount {
             const twitterName = nameReplace(this.dataSheet.getRange(i + j + k + 1, 7, 1, 1).getValue());
             const group = nameReplace(this.dataSheet.getRange(i + j + k + 1, 1, 1, 1).getValue());
             const userID = this.dataSheet.getRange(i + j + k + 1, 12, 1, 1).getValue();
+
+            const history: string[] = [];
+            const setValueRow: number = this.historySheet.getLastRow() + 1;
+
             if (userID) {
               if (this.getTwitterChange(userID, newID)) {
+                history.push(group, twitterID, twitterName, '変更', dayjs.dayjs().format('YYYY/MM/DD HH:MM:ss'));
                 if (nameGroupMatch(twitterName, group)) {
                   client.postTweet('【ユーザー名変更】' + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
                 } else {
@@ -113,6 +118,7 @@ export class CheckAccount {
                 this.dataSheet.getRange(i + j + k + 1, 6, 1, 1).setValue(newID[0]);
                 newID = [];
               } else {
+                history.push(group, twitterID, twitterName, '削除', dayjs.dayjs().format('YYYY/MM/DD HH:MM:ss'));
                 if (nameGroupMatch(twitterName, group)) {
                   client.postTweet('【アカウント削除】' + twitterName + ' ' + twitterID);
                 } else {
@@ -122,6 +128,7 @@ export class CheckAccount {
                 this.dataSheet.getRange(i + j + k + 1, 1, 1, 14).setBackground('#00ffff');
               }
             } else {
+              history.push(group, twitterID, twitterName, '不明', dayjs.dayjs().format('YYYY/MM/DD HH:MM:ss'));
               if (nameGroupMatch(twitterName, group)) {
                 client.postTweet('【アカウント所在不明】' + twitterName + ' ' + twitterID);
               } else {
@@ -130,6 +137,7 @@ export class CheckAccount {
               this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('不明');
               this.dataSheet.getRange(i + j + k + 1, 1, 1, 14).setBackground('#00ffff');
             }
+            this.historySheet.getRange(setValueRow, 1, 1, 5).setValues([history]);
           }
         }
       }
