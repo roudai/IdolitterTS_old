@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function checkAccount_try() {
-  var lastError = null;
-  for(var i = 0; i < 3; i++) {
+  let lastError = null;
+  for (let i = 0; i < 3; i++) {
     try {
       checkAccount();
       return;
-    } catch(e) {
+    } catch (e) {
       lastError = e;
       Logger.log(e);
     }
@@ -13,17 +14,17 @@ function checkAccount_try() {
   throw lastError;
 }
 
-function dailyAnalysis_try(){
-    var lastError = null;
-    for(var i = 0; i < 10; i++) {
-      try {
-        dailyAnalysis();
-        return;
-      } catch(e) {
-        lastError = e;
-        Logger.log(e);
-      }
-      Utilities.sleep(60000);
+function dailyAnalysis_try() {
+  let lastError = null;
+  for (let i = 0; i < 10; i++) {
+    try {
+      dailyAnalysis();
+      return;
+    } catch (e) {
+      lastError = e;
+      Logger.log(e);
     }
-    throw lastError;
+    Utilities.sleep(60000);
   }
+  throw lastError;
+}
