@@ -5,6 +5,7 @@ import { GeneratePost } from './generate-post';
 
 const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('アイドル一覧');
 const diffSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('取得差分');
+const historySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('履歴');
 
 // ランダムアイドル紹介
 function postUpdateStatus() {
@@ -17,7 +18,7 @@ function postUpdateStatus() {
 
 // アカウント生存監視
 function checkAccount() {
-  const checkAccount = new CheckAccount(dataSheet);
+  const checkAccount = new CheckAccount(dataSheet, historySheet);
   checkAccount.sortData();
   checkAccount.checkDeleteAccount();
   checkAccount.checkExistAccount();
