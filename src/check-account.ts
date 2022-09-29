@@ -84,8 +84,12 @@ export class CheckAccount {
                 .join()
             )
           ) {
-            // 10件で成功した場合、次のループ
-            continue;
+            // 10件未満の場合最後なのでここで終了、10件で成功した場合、次のループ
+            if (getNum < 10) {
+              break;
+            } else {
+              continue;
+            }
           }
           // 10件で失敗した場合、1件ずつ取得
           for (let k = 0; k < 10; k = k + 1) {
@@ -148,6 +152,9 @@ export class CheckAccount {
   }
 
   private getTwitterPass(twitterIDs: string) {
+    if (twitterIDs[0] === '') {
+      return false;
+    }
     const response = client.UsersLookupUsernames([twitterIDs]);
     if (response['errors']) {
       return false;
