@@ -265,7 +265,7 @@ export class DailyAnalysis {
     let nextRankTweet = '';
     let rank = 1;
     let rankup = 0;
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < increase.length; i++) {
       // 10位まで終わったら終了
       if (rank > 10) {
         break;
