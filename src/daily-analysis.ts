@@ -235,7 +235,12 @@ export class DailyAnalysis {
     const today =
       dayjs.dayjs().subtract(1, 'day').format('M月D日') + '（' + dayjs.dayjs().locale('ja').format('dd') + '）';
 
-    let title, group, name, before, after, increase;
+    let title = '';
+    let group = [];
+    let name = [];
+    let before = [];
+    let after = [];
+    let increase = [];
     if (type == 'follower') {
       title = '【' + today + 'フォロワー数増ランキング】' + '\n';
       group = this.diffSheet.getRange('I2:I30').getValues();
@@ -252,7 +257,12 @@ export class DailyAnalysis {
       increase = this.diffSheet.getRange('U2:U30').getValues();
     }
 
-    let tweetId, response, tweet, rename, reincrease;
+    let tweetId = '';
+    let response = [];
+    let tweet = '';
+    let rename = '';
+    let reincrease = '';
+    let nextRankTweet = '';
     let rank = 1;
     let rankup = 0;
     for (let i = 0; i < 30; i++) {
@@ -265,25 +275,27 @@ export class DailyAnalysis {
         continue;
       }
 
-      if (!tweet) {
+      if (tweet === '') {
         tweet = title;
       }
       rename = nameReplace(String(name[i]));
-      if (type == 'follower') {
+      if (type === 'follower') {
         reincrease = increase[i] + '人';
-      } else if (type == 'tweet') {
+      } else if (type === 'tweet') {
         reincrease = increase[i];
       }
 
       if (nameGroupMatch(name[i], group[i])) {
-        tweet = tweet! + rank + '位 ' + reincrease + ' ' + rename + '\n';
+        nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + '\n';
       } else {
-        tweet = tweet! + rank + '位 ' + reincrease + ' ' + rename + ' (' + group[i] + ')' + '\n';
+        nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + ' (' + group[i] + ')' + '\n';
       }
 
-      if (tweet.length > 140) {
-        tweet = tweet.slice(0, tweet.lastIndexOf(rank + '位 '));
-        if (tweetId == '') {
+      if (tweet.length + nextRankTweet.length <= 140) {
+        tweet = tweet + nextRankTweet;
+      } else {
+        // ツイート文字数が140文字を超えたら、次のランクを追加せずツイートする
+        if (tweetId === '') {
           response = client.postTweet(tweet);
         } else {
           response = client.postTweet(tweet, tweetId);
@@ -299,6 +311,7 @@ export class DailyAnalysis {
         rank = rank + rankup + 1;
         rankup = 0;
       }
+      nextRankTweet = '';
     }
     client.postTweet(tweet, tweetId);
   }
