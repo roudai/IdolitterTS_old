@@ -21,7 +21,7 @@ export class CheckAccount {
     const twitterID = this.dataSheet.getRange(2, 6, this.lastRow, 1).getValues();
 
     for (let i = 0; i < this.lastRow; i = i + 1) {
-      if (twitterStatus[i] != '') {
+      if (twitterStatus[i][0] !== '') {
         Logger.log(twitterID[i]);
         if (this.getTwitterPass(twitterID[i][0])) {
           // アカウントが存在した場合、削除を取り消し
