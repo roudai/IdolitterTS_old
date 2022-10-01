@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { GeneratePost } from './generate-post';
+import { CheckError } from './check-error';
 import { CheckAccount } from './check-account';
 import { DailyAnalysis } from './daily-analysis';
-import { GeneratePost } from './generate-post';
 
 const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('アイドル一覧');
 const diffSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('取得差分');
@@ -14,6 +15,13 @@ function postUpdateStatus() {
   generatePost.generateInfo();
   generatePost.postTweet();
   generatePost.followAccount();
+}
+
+// エラーチェック
+function checkError() {
+  const checkError = new CheckError(dataSheet);
+  checkError.checkDuplication();
+  checkError.checkBlank();
 }
 
 // アカウント生存監視
