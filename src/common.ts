@@ -62,7 +62,7 @@ function idBackup(dataSheet: any, lastRow: number) {
   for (let i = 0; i < lastRow; i = i + 1) {
     if (twitterStatus[i] != '') {
       const id = dataSheet.getRange(i + 2, 6).getValue();
-      dataSheet.getRange(i + 2, 15).setValue(id);
+      dataSheet.getRange(i + 2, 16).setValue(id);
       dataSheet.getRange(i + 2, 6).setValue('idol_itter');
     }
   }
@@ -71,12 +71,12 @@ function idBackup(dataSheet: any, lastRow: number) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function idUndo(dataSheet: any, lastRow: number) {
   // 置き換えたダミーアカウントを戻す
-  const dummyID = dataSheet.getRange(2, 15, lastRow, 1).getValues();
+  const dummyID = dataSheet.getRange(2, 16, lastRow, 1).getValues();
   for (let i = 0; i < lastRow; i = i + 1) {
     if (dummyID[i] != '') {
-      const id = dataSheet.getRange(i + 2, 15).getValue();
+      const id = dataSheet.getRange(i + 2, 16).getValue();
       dataSheet.getRange(i + 2, 6).setValue(id);
-      dataSheet.getRange(i + 2, 15).setValue(null);
+      dataSheet.getRange(i + 2, 16).setValue(null);
     }
   }
 }
