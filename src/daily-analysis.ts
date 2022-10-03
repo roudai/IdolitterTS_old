@@ -233,7 +233,10 @@ export class DailyAnalysis {
 
   tweetRanking(type: string) {
     const today =
-      dayjs.dayjs().subtract(1, 'day').format('M月D日') + '（' + dayjs.dayjs().locale('ja').format('dd') + '）';
+      dayjs.dayjs().subtract(1, 'day').format('M月D日') +
+      '（' +
+      dayjs.dayjs().subtract(1, 'day').locale('ja').format('dd') +
+      '）';
 
     let title = '';
     let group = [];
