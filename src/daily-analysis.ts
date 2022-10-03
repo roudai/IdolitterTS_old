@@ -292,6 +292,7 @@ export class DailyAnalysis {
       }
 
       if (tweet.length + nextRankTweet.length <= 140) {
+        // ツイート文字数が140文字以下の場合は次のランクに進む
         tweet = tweet + nextRankTweet;
       } else {
         // ツイート文字数が140文字を超えたら、次のランクを追加せずツイートする
@@ -301,17 +302,16 @@ export class DailyAnalysis {
           response = client.postTweet(tweet, tweetId);
         }
         tweetId = response['data']['id'];
-        tweet = '';
-        i = i - 1;
-        continue;
+        tweet = title + nextRankTweet;
       }
+      nextRankTweet = '';
+
       if (increase[i][0] === increase[i + 1][0]) {
         rankup = rankup + 1;
       } else {
         rank = rank + rankup + 1;
         rankup = 0;
       }
-      nextRankTweet = '';
     }
     client.postTweet(tweet, tweetId);
   }
