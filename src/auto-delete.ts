@@ -23,7 +23,7 @@ export class AutoDelete {
           this.dataSheet.getRange(nowRow, 1, 1, 15).setBackground('#dcdcdc');
         }
         // 卒業脱退予定日が今日より前
-        if (deleteDay.isBefore(today) || deleteDay.isSame(today)) {
+        else if (deleteDay.isBefore(today) || deleteDay.isSame(today)) {
           this.dataSheet.getRange(nowRow, 1, 1, 15).setBackground('#a9a9a9');
           if (this.dataSheet.getRange(nowRow, 14).getValue() === '削除') {
             this.deleteData(nowRow);
@@ -31,7 +31,7 @@ export class AutoDelete {
           }
         }
         // 卒業脱退予定の14日後が今日より前
-        if (deleteDay.add(14, 'day').isBefore(today)) {
+        else if (deleteDay.add(14, 'day').isBefore(today)) {
           this.deleteData(nowRow);
           shiftRow += 1;
         }
