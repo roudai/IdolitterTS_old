@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { GeneratePost } from './generate-post';
 import { CheckError } from './check-error';
+import { AutoDelete } from './auto-delete';
 import { CheckAccount } from './check-account';
 import { DailyAnalysis } from './daily-analysis';
 
@@ -22,6 +23,11 @@ function checkError() {
   const checkError = new CheckError(dataSheet);
   checkError.checkDuplication();
   checkError.checkBlank();
+}
+
+function autoDelete() {
+  const autoDelete = new AutoDelete(dataSheet, historySheet);
+  autoDelete.checkDelete();
 }
 
 // アカウント生存監視
