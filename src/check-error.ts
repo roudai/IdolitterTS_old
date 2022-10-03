@@ -16,7 +16,7 @@ export class CheckError {
       .getValues()
       .flat();
 
-    const idDeplication = twitterID.filter(function (val: string, i: number) {
+    const idDeplication = twitterID.filter((val: string, i: number) => {
       return !(twitterID.indexOf(val) === i);
     });
     if (idDeplication.length !== 0) {
