@@ -274,7 +274,7 @@ export class DailyAnalysis {
         break;
       }
       // 増加率が8倍以上の場合、イレギュラーデータとしてスキップ
-      if (after[i] / before[i] >= 8) {
+      if (before[i] === 0 || after[i] / before[i] >= 8) {
         continue;
       }
 
