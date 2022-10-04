@@ -34,6 +34,7 @@ function autoDelete() {
 function checkAccount() {
   const checkAccount = new CheckAccount(dataSheet, historySheet);
   checkAccount.sortData();
+  checkAccount.addLink();
   checkAccount.checkDeleteAccount();
   checkAccount.checkExistAccount();
 }

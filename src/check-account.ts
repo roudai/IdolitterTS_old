@@ -14,6 +14,18 @@ export class CheckAccount {
     idFix(this.dataSheet, this.lastRow);
   }
 
+  // TwitterIDにリンクを追加
+  addLink() {
+    const twitterID = this.dataSheet.getRange(2, 6, this.lastRow, 1).getValues();
+    twitterID.map((value: string, i: number) => {
+      if (value.indexOf('https://twitter.com/') !== 1) {
+        value = '=HYPERLINK("https://twitter.com/' + value + '","' + value + '")';
+        twitterID[i][0] = value;
+      }
+    });
+    this.dataSheet.getRange(2, 6, this.lastRow, 1).setValues(twitterID);
+  }
+
   // 削除アカウントのチェック
   checkDeleteAccount() {
     this.dataSheet.getRange(2, 14, this.lastRow, 1).getValues();
