@@ -39,7 +39,6 @@ export class CheckAccount {
 
     twitterStatus.map((value: string, i: number) => {
       if (value !== '') {
-        Logger.log(value);
         if (this.getTwitterPass(twitterID[i])) {
           // アカウントが存在した場合、削除を取り消し
           this.dataSheet.getRange(i + 2, 14).setValue(null);
