@@ -29,13 +29,19 @@ export class CheckAccount {
   // 削除アカウントのチェック
   checkDeleteAccount() {
     this.dataSheet.getRange(2, 14, this.lastRow, 1).getValues();
-    const twitterStatus = this.dataSheet.getRange(2, 14, this.lastRow, 1).getValues();
-    const twitterID = this.dataSheet.getRange(2, 6, this.lastRow, 1).getValues();
+    const twitterStatus = this.dataSheet
+      .getRange(2, 14, this.lastRow - 1, 1)
+      .getValues()
+      .flat();
+    const twitterID = this.dataSheet
+      .getRange(2, 6, this.lastRow - 1, 1)
+      .getValues()
+      .flat();
 
-    for (let i = 0; i < this.lastRow; i = i + 1) {
-      if (twitterStatus[i][0] !== '') {
-        Logger.log(twitterID[i]);
-        if (this.getTwitterPass(twitterID[i][0])) {
+    twitterStatus.map((value: string, i: number) => {
+      if (value !== '') {
+        Logger.log(value);
+        if (this.getTwitterPass(value)) {
           // アカウントが存在した場合、削除を取り消し
           this.dataSheet.getRange(i + 2, 14).setValue(null);
           this.dataSheet.getRange(i + 2, 1, 1, 14).setBackground(null);
@@ -46,7 +52,7 @@ export class CheckAccount {
 
           const history: string[] = [];
           const setValueRow: number = this.historySheet.getLastRow() + 1;
-          history.push(group, twitterID[i][0], twitterName, '復活', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
+          history.push(group, twitterID[i], twitterName, '復活', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
           this.historySheet.getRange(setValueRow, 1, 1, 5).setValues([history]);
 
           if (nameGroupMatch(twitterName, group)) {
@@ -56,7 +62,7 @@ export class CheckAccount {
           }
         }
       }
-    }
+    });
   }
 
   // アカウントの生存チェック
