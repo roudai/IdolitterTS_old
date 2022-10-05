@@ -17,10 +17,9 @@ export class CheckAccount {
   // TwitterIDにリンクを追加
   addLink() {
     const twitterID = this.dataSheet.getRange(2, 6, this.lastRow - 1, 1).getValues();
-    twitterID.map((value: string, i: number) => {
+    twitterID.map((value: string[], i: number) => {
       if (value.indexOf('https://twitter.com/') !== 1) {
-        value = '=HYPERLINK("https://twitter.com/' + value + '","' + value + '")';
-        twitterID[i][0] = value;
+        twitterID[i][0] = '=HYPERLINK("https://twitter.com/' + value + '","' + value + '")';
       }
     });
     this.dataSheet.getRange(2, 6, this.lastRow - 1, 1).setValues(twitterID);
