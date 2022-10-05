@@ -23,7 +23,7 @@ export class CheckAccount {
         twitterID[i][0] = value;
       }
     });
-    this.dataSheet.getRange(2, 6, this.lastRow, 1).setValues(twitterID);
+    this.dataSheet.getRange(2, 6, this.lastRow - 1, 1).setValues(twitterID);
   }
 
   // 削除アカウントのチェック
