@@ -44,7 +44,7 @@ export class CheckAccount {
         if (this.getTwitterPass(twitterID[i])) {
           // アカウントが存在した場合、削除を取り消し
           this.dataSheet.getRange(i + 2, 14).setValue(null);
-          this.dataSheet.getRange(i + 2, 1, 1, 14).setBackground(null);
+          this.dataSheet.getRange(i + 2, 1, 1, 15).setBackground(null);
 
           const response = client.UsersLookupUsernames([twitterID[i]]);
           const twitterName = nameReplace(response['data'][0]['name']);
@@ -147,7 +147,7 @@ export class CheckAccount {
                   client.postTweet('【アカウント削除】' + twitterName + ' (' + group + ') ' + twitterID);
                 }
                 this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('削除');
-                this.dataSheet.getRange(i + j + k + 1, 1, 1, 14).setBackground('#00ffff');
+                this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
               }
             } else {
               history.push(group, twitterID, twitterName, '不明', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
@@ -157,7 +157,7 @@ export class CheckAccount {
                 client.postTweet('【アカウント所在不明】' + twitterName + ' (' + group + ') ' + twitterID);
               }
               this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('不明');
-              this.dataSheet.getRange(i + j + k + 1, 1, 1, 14).setBackground('#00ffff');
+              this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
             }
             this.historySheet.getRange(setValueRow, 1, 1, 5).setValues([history]);
           }
