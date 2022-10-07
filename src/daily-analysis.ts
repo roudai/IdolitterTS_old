@@ -3,7 +3,6 @@ import 'google-apps-script/google-apps-script.spreadsheet';
 export class DailyAnalysis {
   private lastRow!: number;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
     private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
     private diffSheet: GoogleAppsScript.Spreadsheet.Sheet

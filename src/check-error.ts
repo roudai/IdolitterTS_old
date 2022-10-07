@@ -5,7 +5,6 @@ export class CheckError {
   private recipient: string;
   private subject: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private dataSheet: GoogleAppsScript.Spreadsheet.Sheet) {
     this.lastRow = this.dataSheet.getLastRow();
     this.recipient = String(PropertiesService.getScriptProperties().getProperty('email'));

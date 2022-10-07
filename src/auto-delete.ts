@@ -3,7 +3,6 @@ import 'google-apps-script/google-apps-script.spreadsheet';
 export class AutoDelete {
   private lastRow!: number;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
     private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
     private historySheet: GoogleAppsScript.Spreadsheet.Sheet
