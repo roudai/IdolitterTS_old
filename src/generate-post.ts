@@ -1,11 +1,12 @@
+import 'google-apps-script/google-apps-script.spreadsheet';
+
 export class GeneratePost {
   private group!: string;
   private twitterID!: string;
   private userID!: string;
   private message!: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private dataSheet: any) {}
+  constructor(private dataSheet: GoogleAppsScript.Spreadsheet.Sheet) {}
 
   // アイドルを抽出する
   selectIdol() {
