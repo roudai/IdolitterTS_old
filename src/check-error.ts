@@ -1,10 +1,12 @@
+import 'google-apps-script/google-apps-script.spreadsheet';
+
 export class CheckError {
   private lastRow!: number;
   private recipient: string;
   private subject: string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private dataSheet: any) {
+  constructor(private dataSheet: GoogleAppsScript.Spreadsheet.Sheet) {
     this.lastRow = this.dataSheet.getLastRow();
     this.recipient = String(PropertiesService.getScriptProperties().getProperty('email'));
     this.subject = 'アイドリッターエラー通知';

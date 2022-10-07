@@ -1,8 +1,13 @@
+import 'google-apps-script/google-apps-script.spreadsheet';
+
 export class DailyAnalysis {
   private lastRow!: number;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private dataSheet: any, private diffSheet: any) {}
+  constructor(
+    private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
+    private diffSheet: GoogleAppsScript.Spreadsheet.Sheet
+  ) {}
 
   sortData() {
     // データ並び替え
@@ -89,7 +94,7 @@ export class DailyAnalysis {
 
     // 現データ削除
     if (this.dataSheet.getFilter()) {
-      this.dataSheet.getFilter().remove();
+      this.dataSheet.getFilter()?.remove();
     }
     this.dataSheet.getRange(2, 7, this.lastRow - 1, 7).clearContent();
 
@@ -97,12 +102,12 @@ export class DailyAnalysis {
     this.dataSheet.getRange(2, 7, this.lastRow - 1, 7).setValues(twitterInfo);
 
     // ダミー情報の削除
-    const dummyID = this.dataSheet.getRange(2, 7, this.lastRow, 1).getValues();
-    for (let i = 0; i < this.lastRow; i = i + 1) {
-      if (dummyID[i] == 'Idolitter') {
+    const dummyID = this.dataSheet.getRange(2, 7, this.lastRow, 1).getValues().flat();
+    dummyID.map((value: string, i: number) => {
+      if (value === 'Idolitter') {
         this.dataSheet.getRange(i + 2, 7, 1, 7).clearContent();
       }
-    }
+    });
 
     // フィルター作成
     this.dataSheet.getRange(1, 1, this.lastRow, 14).createFilter();
@@ -239,25 +244,25 @@ export class DailyAnalysis {
       '）';
 
     let title = '';
-    let group = [];
-    let name = [];
-    let before = [];
-    let after = [];
-    let increase = [];
+    let group: string[] = [];
+    let name: string[] = [];
+    let before: number[] = [];
+    let after: number[] = [];
+    let increase: string[] = [];
     if (type == 'follower') {
       title = '【' + today + 'フォロワー数増ランキング】' + '\n';
-      group = this.diffSheet.getRange('I2:I30').getValues();
-      name = this.diffSheet.getRange('K2:K30').getValues();
-      before = this.diffSheet.getRange('L2:L30').getValues();
-      after = this.diffSheet.getRange('M2:M30').getValues();
-      increase = this.diffSheet.getRange('N2:N30').getValues();
+      group = this.diffSheet.getRange('I2:I30').getValues().flat();
+      name = this.diffSheet.getRange('K2:K30').getValues().flat();
+      before = this.diffSheet.getRange('L2:L30').getValues().flat();
+      after = this.diffSheet.getRange('M2:M30').getValues().flat();
+      increase = this.diffSheet.getRange('N2:N30').getValues().flat();
     } else if (type == 'tweet') {
       title = '【' + today + 'ツイート数ランキング】' + '\n';
-      group = this.diffSheet.getRange('P2:P30').getValues();
-      name = this.diffSheet.getRange('R2:R30').getValues();
-      before = this.diffSheet.getRange('S2:S30').getValues();
-      after = this.diffSheet.getRange('T2:T30').getValues();
-      increase = this.diffSheet.getRange('U2:U30').getValues();
+      group = this.diffSheet.getRange('P2:P30').getValues().flat();
+      name = this.diffSheet.getRange('R2:R30').getValues().flat();
+      before = this.diffSheet.getRange('S2:S30').getValues().flat();
+      after = this.diffSheet.getRange('T2:T30').getValues().flat();
+      increase = this.diffSheet.getRange('U2:U30').getValues().flat();
     }
 
     let tweetId = '';
