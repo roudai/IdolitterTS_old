@@ -8,6 +8,15 @@ export class DailyAnalysis {
     private diffSheet: GoogleAppsScript.Spreadsheet.Sheet
   ) {}
 
+  backupData() {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet();
+    const trashSheet = sheet.getSheetByName('アイドル一覧_' + dayjs.dayjs().subtract(1, 'day').format('YYYYMMDD'));
+    if (trashSheet !== null) {
+      sheet.deleteSheet(trashSheet);
+    }
+    this.dataSheet.copyTo(sheet).setName('アイドル一覧_' + dayjs.dayjs().format('YYYYMMDD'));
+  }
+
   sortData() {
     // データ並び替え
     this.dataSheet.getRange(2, 1, this.dataSheet.getLastRow() - 1, this.dataSheet.getLastColumn()).sort([

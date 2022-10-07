@@ -42,6 +42,7 @@ function checkAccount() {
 // アカウント情報取得、データ集計、ランキングツイート
 function dailyAnalysis() {
   const dailyAnalysis = new DailyAnalysis(dataSheet, diffSheet);
+  dailyAnalysis.backupData();
   dailyAnalysis.sortData();
   dailyAnalysis.getAllInformation();
   dailyAnalysis.dailyAnalysis();
