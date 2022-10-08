@@ -43,7 +43,7 @@ export class CheckAccount {
 
     twitterStatus.map((value: string, i: number) => {
       if (value !== '') {
-        if (this.getTwitterPass(twitterID[i])) {
+        if (this.dataSheet.getRange(i + 2, 6).getValue() !== 'idol_itter' && this.getTwitterPass(twitterID[i])) {
           // アカウントが存在した場合、削除を取り消し
           this.dataSheet.getRange(i + 2, 14).setValue(null);
           this.dataSheet.getRange(i + 2, 1, 1, 15).setBackground(null);
