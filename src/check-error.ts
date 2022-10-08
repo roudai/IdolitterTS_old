@@ -22,7 +22,11 @@ export class CheckError {
     });
     if (idDeplication.length !== 0) {
       Logger.log('TwitterID重複');
-      MailApp.sendEmail(this.recipient, this.subject, 'TwitterID重複：' + idDeplication);
+      if (this.recipient !== null) {
+        MailApp.sendEmail(this.recipient, this.subject, 'TwitterID重複：' + idDeplication);
+      } else {
+        console.error('TwitterID重複：' + idDeplication);
+      }
     }
   }
 
