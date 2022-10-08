@@ -122,7 +122,7 @@ export class DailyAnalysis {
     });
 
     // フィルター作成
-    this.dataSheet.getRange(1, 1, this.lastRow, 14).createFilter();
+    this.dataSheet.getRange(1, 1, this.lastRow, 15).createFilter();
   }
 
   private getTwitterInformation(twitterInfo: unknown[], twitterIDs: string, num: number) {
