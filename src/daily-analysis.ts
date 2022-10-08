@@ -11,8 +11,12 @@ export class DailyAnalysis {
   backupData() {
     const sheet = SpreadsheetApp.getActiveSpreadsheet();
     const trashSheet = sheet.getSheetByName('アイドル一覧_' + dayjs.dayjs().subtract(1, 'day').format('YYYYMMDD'));
+    const copySheet = sheet.getSheetByName('アイドル一覧_' + dayjs.dayjs().format('YYYYMMDD'));
     if (trashSheet !== null) {
       sheet.deleteSheet(trashSheet);
+    }
+    if (copySheet !== null) {
+      sheet.deleteSheet(copySheet);
     }
     this.dataSheet.copyTo(sheet).setName('アイドル一覧_' + dayjs.dayjs().format('YYYYMMDD'));
   }
