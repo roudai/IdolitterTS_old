@@ -326,7 +326,7 @@ export class DailyAnalysis {
       }
       nextRankTweet = '';
 
-      if (increase[i][0] === increase[i + 1][0]) {
+      if (increase[i] === increase[i + 1]) {
         rankup = rankup + 1;
       } else {
         rank = rank + rankup + 1;
