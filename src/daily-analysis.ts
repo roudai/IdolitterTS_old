@@ -257,6 +257,7 @@ export class DailyAnalysis {
 
     let title = '';
     let group: string[] = [];
+    let twitterId: string[] = [];
     let name: string[] = [];
     let before: number[] = [];
     let after: number[] = [];
@@ -264,6 +265,7 @@ export class DailyAnalysis {
     if (type == 'follower') {
       title = '【' + today + 'フォロワー数増ランキング】' + '\n';
       group = this.diffSheet.getRange('I2:I30').getValues().flat();
+      twitterId = this.diffSheet.getRange('J2:J30').getValues().flat();
       name = this.diffSheet.getRange('K2:K30').getValues().flat();
       before = this.diffSheet.getRange('L2:L30').getValues().flat();
       after = this.diffSheet.getRange('M2:M30').getValues().flat();
@@ -277,6 +279,7 @@ export class DailyAnalysis {
       increase = this.diffSheet.getRange('U2:U30').getValues().flat();
     }
 
+    let topFollowerId = '';
     let tweetId = '';
     let response = [];
     let tweet = '';
@@ -299,6 +302,9 @@ export class DailyAnalysis {
         tweet = title;
       }
       rename = nameReplace(String(name[i]));
+      if (topFollowerId === '') {
+        topFollowerId = twitterId[i];
+      }
       if (type === 'follower') {
         reincrease = increase[i] + '人';
       } else if (type === 'tweet') {
@@ -334,5 +340,50 @@ export class DailyAnalysis {
       }
     }
     client.postTweet(tweet, tweetId);
+
+    if (type === 'follower') {
+      this.rankRetweet(topFollowerId);
+    }
+  }
+
+  rankRetweet(twitterID: string) {
+    let id = '';
+    let tweetId: string;
+    let retweet_count: number;
+    let like_count: number;
+    let quote_count: number;
+    let buzz_tweetId = '';
+    let buzz_count = 0;
+    let max_buzz = 0;
+    const start_time = dayjs.dayjs().subtract(2, 'day').format('YYYY-MM-DDTHH:mm:ssZ');
+
+    const AlltwitterID = this.dataSheet
+      .getRange(2, 6, this.lastRow - 1, 1)
+      .getValues()
+      .flat();
+    AlltwitterID.map((value: string, i: number) => {
+      if (value === twitterID) {
+        id = this.dataSheet.getRange(i + 2, 12).getValue();
+      }
+    });
+    // 過去48時間のツイートを最大100件取得する
+    const response = client.getTimeLine(id, 100, false, start_time);
+
+    for (let i = 0; i <= response['tweet'].length - 1; i = i + 1) {
+      tweetId = response['tweet'][i][0];
+      retweet_count = response['tweet'][i][2];
+      like_count = response['tweet'][i][3];
+      quote_count = response['tweet'][i][4];
+      buzz_count = retweet_count + like_count + quote_count;
+      if (buzz_count > max_buzz) {
+        buzz_tweetId = tweetId;
+        max_buzz = buzz_count;
+      }
+    }
+
+    // リツイート数＋ライク数＋引用リツイートが一番多いツイートをリツイートする。ただし100未満の場合は何もしない。
+    if (max_buzz >= 100) {
+      client.createRetweet(PropertiesService.getScriptProperties().getProperty('twitterid'), buzz_tweetId);
+    }
   }
 }
