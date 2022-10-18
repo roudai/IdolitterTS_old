@@ -14,7 +14,7 @@ function nameGroupMatch(name: string, group: string) {
 }
 
 function nameReplace(name: string) {
-  return replaceFullToHalf(name).replace('@', ' ');
+  return replaceFullToHalf(name).replace('@', '@\u200B').replace('.', '.\u200B');
 }
 
 // 全角→半角(英数字)

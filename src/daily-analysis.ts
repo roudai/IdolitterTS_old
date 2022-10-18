@@ -284,6 +284,7 @@ export class DailyAnalysis {
     let response = [];
     let tweet = '';
     let rename = '';
+    let regroup = '';
     let reincrease = '';
     let nextRankTweet = '';
     let rank = 1;
@@ -302,6 +303,7 @@ export class DailyAnalysis {
         tweet = title;
       }
       rename = nameReplace(String(name[i]));
+      regroup = nameReplace(String(group[i]));
       if (topFollowerId === '') {
         topFollowerId = twitterId[i];
       }
@@ -314,7 +316,7 @@ export class DailyAnalysis {
       if (nameGroupMatch(name[i], group[i])) {
         nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + '\n';
       } else {
-        nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + ' (' + group[i] + ')' + '\n';
+        nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + ' (' + regroup + ')' + '\n';
       }
 
       if (tweet.length + nextRankTweet.length <= 140) {
