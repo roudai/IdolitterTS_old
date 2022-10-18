@@ -1,3 +1,4 @@
+import 'google-apps-script/google-apps-script.spreadsheet';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 function nameGroupMatch(name: string, group: string) {
   name = String(name);
@@ -44,23 +45,19 @@ function getNum_10(i: number, j: number, lastRow: number) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function idFix(dataSheet: any, lastRow: number) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let id: any[] = [];
-  id = dataSheet.getRange(2, 6, lastRow - 1, 1).getValues();
+function idFix(dataSheet: GoogleAppsScript.Spreadsheet.Sheet, lastRow: number) {
+  const id: string[][] = dataSheet.getRange(2, 6, lastRow - 1, 1).getValues();
   for (let i = 0; i < id.length; i++) {
     id[i][0] = id[i][0].replace(/[\s\t\n -/:-@[-^`{-~]/g, '');
   }
   dataSheet.getRange(2, 6, lastRow - 1).setValues(id);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function idBackup(dataSheet: any, lastRow: number) {
+function idBackup(dataSheet: GoogleAppsScript.Spreadsheet.Sheet, lastRow: number) {
   // 削除アカウントを一旦ダミーアカウントに置き換え
-  const twitterStatus = dataSheet.getRange(2, 14, lastRow, 1).getValues();
+  const twitterStatus: string[][] = dataSheet.getRange(2, 14, lastRow, 1).getValues();
   for (let i = 0; i < lastRow; i = i + 1) {
-    if (twitterStatus[i] != '') {
+    if (twitterStatus[i][0] !== '') {
       const id = dataSheet.getRange(i + 2, 6).getValue();
       dataSheet.getRange(i + 2, 16).setValue(id);
       dataSheet.getRange(i + 2, 6).setValue('idol_itter');
@@ -68,12 +65,11 @@ function idBackup(dataSheet: any, lastRow: number) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function idUndo(dataSheet: any, lastRow: number) {
+function idUndo(dataSheet: GoogleAppsScript.Spreadsheet.Sheet, lastRow: number) {
   // 置き換えたダミーアカウントを戻す
-  const dummyID = dataSheet.getRange(2, 16, lastRow, 1).getValues();
+  const dummyID: string[][] = dataSheet.getRange(2, 16, lastRow, 1).getValues();
   for (let i = 0; i < lastRow; i = i + 1) {
-    if (dummyID[i] != '') {
+    if (dummyID[i][0] != '') {
       const id = dataSheet.getRange(i + 2, 16).getValue();
       dataSheet.getRange(i + 2, 6).setValue(id);
       dataSheet.getRange(i + 2, 16).setValue(null);
