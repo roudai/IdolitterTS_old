@@ -2,8 +2,7 @@ import 'google-apps-script/google-apps-script.spreadsheet';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 function nameGroupMatch(name: string, group: string) {
   name = String(name);
-  group = String(group);
-
+  group = String(group).replace('+', '');
   if (
     name.replace(/\s/g, '').match(group.replace(/\s/g, '')) ||
     replaceFullToHalf(name).match(replaceFullToHalf(group)) ||
