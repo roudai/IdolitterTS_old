@@ -55,7 +55,7 @@ function dailyAnalysis() {
     dailyAnalysis.sortData();
     dailyAnalysis.getAllInformation();
     dailyAnalysis.dailyAnalysis();
-    dailyAnalysis.tweetRanking('follower');
     dailyAnalysis.tweetRanking('tweet');
+    dailyAnalysis.tweetRanking('follower');
   }
 }
