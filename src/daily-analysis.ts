@@ -1,7 +1,9 @@
 import 'google-apps-script/google-apps-script.spreadsheet';
+import { Common } from './common';
 
 export class DailyAnalysis {
   private lastRow!: number;
+  private common: Common = new Common();
 
   constructor(
     private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
@@ -28,7 +30,7 @@ export class DailyAnalysis {
       { column: 12, ascending: true },
     ]);
     this.lastRow = this.dataSheet.getLastRow();
-    idFix(this.dataSheet, this.lastRow);
+    this.common.idFix(this.dataSheet, this.lastRow);
   }
 
   getAllInformation() {
@@ -36,7 +38,7 @@ export class DailyAnalysis {
     const twitterInfo: any[] = [];
     let getNum: number;
 
-    idBackup(this.dataSheet, this.lastRow);
+    this.common.idBackup(this.dataSheet, this.lastRow);
 
     try {
       // 100件ごとにTwitter情報取得
@@ -45,7 +47,7 @@ export class DailyAnalysis {
         if (i == this.lastRow) {
           break;
         }
-        getNum = getNum_100(i, this.lastRow);
+        getNum = this.common.getNum_100(i, this.lastRow);
         if (
           this.getTwitterInformation(
             twitterInfo,
@@ -61,7 +63,7 @@ export class DailyAnalysis {
         }
         // 100件で失敗した場合、10件ごとに取得
         for (let j = 0; j < 100; j = j + 10) {
-          getNum = getNum_10(i, j, this.lastRow);
+          getNum = this.common.getNum_10(i, j, this.lastRow);
           if (
             this.getTwitterInformation(
               twitterInfo,
@@ -94,7 +96,7 @@ export class DailyAnalysis {
         }
       }
     } finally {
-      idUndo(this.dataSheet, this.lastRow);
+      this.common.idUndo(this.dataSheet, this.lastRow);
     }
 
     // 現データコピー
@@ -302,8 +304,8 @@ export class DailyAnalysis {
       if (tweet === '') {
         tweet = title;
       }
-      rename = nameReplace(String(name[i]));
-      regroup = nameReplace(String(group[i]));
+      rename = this.common.nameReplace(String(name[i]));
+      regroup = this.common.nameReplace(String(group[i]));
       if (topFollowerId === '') {
         topFollowerId = twitterId[i];
       }
@@ -313,7 +315,7 @@ export class DailyAnalysis {
         reincrease = increase[i];
       }
 
-      if (nameGroupMatch(name[i], group[i])) {
+      if (this.common.nameGroupMatch(name[i], group[i])) {
         nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + '\n';
       } else {
         nextRankTweet = rank + '位 ' + reincrease + ' ' + rename + ' (' + regroup + ')' + '\n';

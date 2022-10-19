@@ -1,7 +1,9 @@
 import 'google-apps-script/google-apps-script.spreadsheet';
+import { Common } from './common';
 
 export class CheckAccount {
   private lastRow!: number;
+  private common: Common = new Common();
 
   constructor(
     private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
@@ -15,7 +17,7 @@ export class CheckAccount {
       { column: 12, ascending: true },
     ]);
     this.lastRow = this.dataSheet.getLastRow();
-    idFix(this.dataSheet, this.lastRow);
+    this.common.idFix(this.dataSheet, this.lastRow);
   }
 
   // TwitterIDにリンクを追加
@@ -49,15 +51,15 @@ export class CheckAccount {
           this.dataSheet.getRange(i + 2, 1, 1, 15).setBackground(null);
 
           const response = client.UsersLookupUsernames([twitterID[i]]);
-          const twitterName = nameReplace(response['data'][0]['name']);
-          const group = nameReplace(this.dataSheet.getRange(i + 2, 1).getValue());
+          const twitterName = this.common.nameReplace(response['data'][0]['name']);
+          const group = this.common.nameReplace(this.dataSheet.getRange(i + 2, 1).getValue());
 
           const history: string[] = [];
           const setValueRow: number = this.historySheet.getLastRow() + 1;
           history.push(group, twitterID[i], twitterName, '復活', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
           this.historySheet.getRange(setValueRow, 1, 1, 5).setValues([history]);
 
-          if (nameGroupMatch(twitterName, group)) {
+          if (this.common.nameGroupMatch(twitterName, group)) {
             client.postTweet('【アカウント復活】' + twitterName + ' ' + twitterID[i]);
           } else {
             client.postTweet('【アカウント復活】' + twitterName + ' (' + group + ') ' + twitterID[i]);
@@ -72,7 +74,7 @@ export class CheckAccount {
     let newID: string[] = [];
     let getNum;
 
-    idBackup(this.dataSheet, this.lastRow);
+    this.common.idBackup(this.dataSheet, this.lastRow);
 
     try {
       // 100件ごとにTwitter情報取得
@@ -81,7 +83,7 @@ export class CheckAccount {
         if (i == this.lastRow) {
           break;
         }
-        getNum = getNum_100(i, this.lastRow);
+        getNum = this.common.getNum_100(i, this.lastRow);
         if (
           this.getTwitterPass(
             this.dataSheet
@@ -95,7 +97,7 @@ export class CheckAccount {
         }
         // 100件で失敗した場合、10件ごとに取得
         for (let j = 0; j < 100; j = j + 10) {
-          getNum = getNum_10(i, j, this.lastRow);
+          getNum = this.common.getNum_10(i, j, this.lastRow);
           if (
             this.getTwitterPass(
               this.dataSheet
@@ -122,8 +124,8 @@ export class CheckAccount {
               continue;
             }
             const twitterID = this.dataSheet.getRange(i + j + k + 1, 6, 1, 1).getValue();
-            const twitterName = nameReplace(this.dataSheet.getRange(i + j + k + 1, 7, 1, 1).getValue());
-            const group = nameReplace(this.dataSheet.getRange(i + j + k + 1, 1, 1, 1).getValue());
+            const twitterName = this.common.nameReplace(this.dataSheet.getRange(i + j + k + 1, 7, 1, 1).getValue());
+            const group = this.common.nameReplace(this.dataSheet.getRange(i + j + k + 1, 1, 1, 1).getValue());
             const userID = this.dataSheet.getRange(i + j + k + 1, 12, 1, 1).getValue();
 
             const history: string[] = [];
@@ -132,7 +134,7 @@ export class CheckAccount {
             if (userID) {
               if (this.getTwitterChange(userID, newID)) {
                 history.push(group, twitterID, twitterName, '変更', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
-                if (nameGroupMatch(twitterName, group)) {
+                if (this.common.nameGroupMatch(twitterName, group)) {
                   client.postTweet('【ユーザー名変更】' + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
                 } else {
                   client.postTweet(
@@ -143,7 +145,7 @@ export class CheckAccount {
                 newID = [];
               } else {
                 history.push(group, twitterID, twitterName, '削除', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
-                if (nameGroupMatch(twitterName, group)) {
+                if (this.common.nameGroupMatch(twitterName, group)) {
                   client.postTweet('【アカウント削除】' + twitterName + ' ' + twitterID);
                 } else {
                   client.postTweet('【アカウント削除】' + twitterName + ' (' + group + ') ' + twitterID);
@@ -153,7 +155,7 @@ export class CheckAccount {
               }
             } else {
               history.push(group, twitterID, twitterName, '不明', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
-              if (nameGroupMatch(twitterName, group)) {
+              if (this.common.nameGroupMatch(twitterName, group)) {
                 client.postTweet('【アカウント所在不明】' + twitterName + ' ' + twitterID);
               } else {
                 client.postTweet('【アカウント所在不明】' + twitterName + ' (' + group + ') ' + twitterID);
@@ -167,7 +169,7 @@ export class CheckAccount {
       }
     } finally {
       // 置き換えたダミーアカウントを戻す
-      idUndo(this.dataSheet, this.lastRow);
+      this.common.idUndo(this.dataSheet, this.lastRow);
     }
   }
 

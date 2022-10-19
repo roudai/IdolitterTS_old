@@ -1,7 +1,9 @@
 import 'google-apps-script/google-apps-script.spreadsheet';
+import { Common } from './common';
 
 export class AutoDelete {
   private lastRow!: number;
+  private common: Common = new Common();
 
   constructor(
     private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
@@ -59,7 +61,7 @@ export class AutoDelete {
   private deleteData(deleteRow: number) {
     const history: string[] = [];
     const setValueRow: number = this.historySheet.getLastRow() + 1;
-    const group = nameReplace(this.dataSheet.getRange(deleteRow, 1).getValue());
+    const group = this.common.nameReplace(this.dataSheet.getRange(deleteRow, 1).getValue());
     const twitterID = this.dataSheet.getRange(deleteRow, 6).getValue();
     const twitterName = this.dataSheet.getRange(deleteRow, 7).getValue();
 
