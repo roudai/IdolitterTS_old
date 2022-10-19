@@ -1,5 +1,6 @@
 import 'google-apps-script/google-apps-script.spreadsheet';
 import { Common } from './common';
+import './dayjs';
 
 export class CheckAccount {
   private lastRow!: number;
