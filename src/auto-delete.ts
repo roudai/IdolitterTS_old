@@ -22,22 +22,35 @@ export class AutoDelete {
       if (value !== '') {
         const deleteDay = dayjs.dayjs(value);
         const nowRow = i + 2 - shiftRow;
+        Logger.log(
+          nowRow +
+            ' ' +
+            this.dataSheet.getRange(nowRow, 6).getValue() +
+            ' : 削除日 ' +
+            dayjs.dayjs(deleteDay).format('YYYY-MM-DD') +
+            ' 今日 ' +
+            dayjs.dayjs(today).format('YYYY-MM-DD')
+        );
         // 卒業脱退予定日が今日より後
         if (deleteDay.isAfter(today)) {
+          Logger.log('卒業脱退前');
           this.dataSheet.getRange(nowRow, 1, 1, 15).setBackground('#dcdcdc');
-        }
-        // 卒業脱退予定日が今日より前
-        else if (deleteDay.isBefore(today) || deleteDay.isSame(today)) {
-          this.dataSheet.getRange(nowRow, 1, 1, 15).setBackground('#a9a9a9');
-          if (this.dataSheet.getRange(nowRow, 14).getValue() === '削除') {
-            this.deleteData(nowRow);
-            shiftRow += 1;
-          }
         }
         // 卒業脱退予定の14日後が今日より前
         else if (deleteDay.add(14, 'day').isBefore(today)) {
+          Logger.log('卒業後削除猶予経過');
           this.deleteData(nowRow);
           shiftRow += 1;
+        }
+        // 卒業脱退予定日が今日より前
+        else if (deleteDay.isBefore(today) || deleteDay.isSame(today)) {
+          Logger.log('卒業脱退済');
+          this.dataSheet.getRange(nowRow, 1, 1, 15).setBackground('#a9a9a9');
+          if (this.dataSheet.getRange(nowRow, 14).getValue() === '削除') {
+            Logger.log('卒業済削済削除');
+            this.deleteData(nowRow);
+            shiftRow += 1;
+          }
         }
       }
     });
