@@ -3,11 +3,11 @@ import 'google-apps-script/google-apps-script.spreadsheet';
 export class Common {
   nameGroupMatch(name: string, group: string) {
     name = String(name);
-    group = String(group).replace('+', '');
+    group = String(group);
     if (
-      name.replace(/\s/g, '').match(group.replace(/\s/g, '')) ||
-      this.replaceFullToHalf(name).match(this.replaceFullToHalf(group)) ||
-      name.replace('たち', '達').replace('...', '…').match(group)
+      name.replace(/\s/g, '').includes(group.replace(/\s/g, '')) ||
+      this.replaceFullToHalf(name).includes(this.replaceFullToHalf(group)) ||
+      name.replace('たち', '達').replace('...', '…').includes(group)
     ) {
       return true;
     }
