@@ -49,7 +49,10 @@ export class AutoDelete {
         else if (deleteDay.isBefore(today) || deleteDay.isSame(today)) {
           Logger.log('卒業脱退済');
           this.dataSheet.getRange(nowRow, 1, 1, 15).setBackground('#a9a9a9');
-          if (this.dataSheet.getRange(nowRow, 14).getValue() === '削除') {
+          if (
+            this.dataSheet.getRange(nowRow, 14).getValue() === '削除' ||
+            this.dataSheet.getRange(nowRow, 14).getValue() === '不明'
+          ) {
             Logger.log('卒業済削済削除');
             this.deleteData(nowRow);
             shiftRow += 1;
