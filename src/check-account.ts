@@ -34,6 +34,7 @@ export class CheckAccount {
 
   // 日付フォーマットの設定
   setDateFormat() {
+    this.dataSheet.getRange(2, 13, this.lastRow, 1).setWrapStrategy(SpreadsheetApp.WrapStrategy.CLIP);
     this.dataSheet.getRange(2, 15, this.lastRow, 1).setNumberFormat('yyyy/MM/dd').setHorizontalAlignment('right');
   }
 
