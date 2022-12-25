@@ -32,6 +32,11 @@ export class CheckAccount {
     this.dataSheet.getRange(2, 6, this.lastRow - 1, 1).setValues(twitterID);
   }
 
+  // 日付フォーマットの設定
+  setDateFormat() {
+    this.dataSheet.getRange(2, 15, this.lastRow, 1).setNumberFormat('yyyy/MM/dd').setHorizontalAlignment('right');
+  }
+
   // 削除アカウントのチェック
   checkDeleteAccount() {
     this.dataSheet.getRange(2, 14, this.lastRow, 1).getValues();
