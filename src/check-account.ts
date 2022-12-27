@@ -63,9 +63,9 @@ export class CheckAccount {
           const group = this.common.nameReplace(this.dataSheet.getRange(i + 2, 1).getValue());
 
           const history: string[] = [];
-          const setValueRow: number = this.historySheet.getLastRow() + 1;
           history.push(group, twitterID[i], twitterName, '復活', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
-          this.historySheet.getRange(setValueRow, 1, 1, 5).setValues([history]);
+          this.historySheet.insertRowAfter(1);
+          this.historySheet.getRange(2, 1, 1, 5).setValues([history]);
 
           if (this.common.nameGroupMatch(twitterName, group)) {
             client.postTweet('【アカウント復活】' + twitterName + ' ' + twitterID[i]);
@@ -140,7 +140,6 @@ export class CheckAccount {
             const userID = this.dataSheet.getRange(i + j + k + 1, 12, 1, 1).getValue();
 
             const history: string[] = [];
-            const setValueRow: number = this.historySheet.getLastRow() + 1;
 
             if (userID) {
               if (this.getTwitterChange(userID, newID)) {
@@ -174,7 +173,8 @@ export class CheckAccount {
               this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('不明');
               this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
             }
-            this.historySheet.getRange(setValueRow, 1, 1, 5).setValues([history]);
+            this.historySheet.insertRowAfter(1);
+            this.historySheet.getRange(1, 1, 1, 5).setValues([history]);
           }
         }
       }
