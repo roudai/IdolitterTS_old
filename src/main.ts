@@ -29,13 +29,6 @@ function checkError() {
   }
 }
 
-function autoDelete() {
-  if (dataSheet !== null && historySheet !== null) {
-    const autoDelete = new AutoDelete(dataSheet, historySheet);
-    autoDelete.checkDelete();
-  }
-}
-
 // アカウント生存監視
 function checkAccount() {
   if (dataSheet !== null && historySheet !== null) {
@@ -45,6 +38,9 @@ function checkAccount() {
     checkAccount.setDateFormat();
     checkAccount.checkDeleteAccount();
     checkAccount.checkExistAccount();
+
+    const autoDelete = new AutoDelete(dataSheet, historySheet);
+    autoDelete.checkDelete();
   }
 }
 
