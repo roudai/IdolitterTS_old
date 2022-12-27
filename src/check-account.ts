@@ -32,10 +32,11 @@ export class CheckAccount {
     this.dataSheet.getRange(2, 6, this.lastRow - 1, 1).setValues(twitterID);
   }
 
-  // 日付フォーマットの設定
-  setDateFormat() {
+  // フォーマットの設定、背景色リセット
+  setFormat() {
     this.dataSheet.getRange(2, 13, this.lastRow, 1).setWrapStrategy(SpreadsheetApp.WrapStrategy.CLIP);
     this.dataSheet.getRange(2, 15, this.lastRow, 1).setNumberFormat('yyyy/MM/dd').setHorizontalAlignment('right');
+    this.dataSheet.getRange(2, 1, this.lastRow, 15).setBackground(null);
   }
 
   // 削除アカウントのチェック
@@ -71,6 +72,9 @@ export class CheckAccount {
           } else {
             client.postTweet('【アカウント復活】' + twitterName + ' (' + group + ') ' + twitterID[i]);
           }
+        } else {
+          // アカウントが存在しない場合、背景色を設定する
+          this.dataSheet.getRange(i + 2, 1, 1, 15).setBackground('#00ffff');
         }
       }
     });

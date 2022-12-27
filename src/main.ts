@@ -35,7 +35,7 @@ function checkAccount() {
     const checkAccount = new CheckAccount(dataSheet, historySheet);
     checkAccount.sortData();
     checkAccount.addLink();
-    checkAccount.setDateFormat();
+    checkAccount.setFormat();
     checkAccount.checkDeleteAccount();
     checkAccount.checkExistAccount();
 
