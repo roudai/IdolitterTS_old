@@ -61,11 +61,19 @@ export class CheckAccount {
           const response = client.UsersLookupUsernames([twitterID[i]]);
           const twitterName = this.common.nameReplace(response['data'][0]['name']);
           const group = this.common.nameReplace(this.dataSheet.getRange(i + 2, 1).getValue());
+          const twitterSchedule = this.dataSheet.getRange(i + 2, 15).getValue();
 
           const history: string[] = [];
-          history.push(group, twitterID[i], twitterName, '復活', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
+          history.push(
+            group,
+            twitterID[i],
+            twitterName,
+            twitterSchedule,
+            '復活',
+            dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
+          );
           this.historySheet.insertRowAfter(1);
-          this.historySheet.getRange(2, 1, 1, 5).setValues([history]);
+          this.historySheet.getRange(2, 1, 1, 6).setValues([history]);
 
           if (this.common.nameGroupMatch(twitterName, group)) {
             client.postTweet('【アカウント復活】' + twitterName + ' ' + twitterID[i]);
@@ -138,12 +146,20 @@ export class CheckAccount {
             const twitterName = this.common.nameReplace(this.dataSheet.getRange(i + j + k + 1, 7, 1, 1).getValue());
             const group = this.common.nameReplace(this.dataSheet.getRange(i + j + k + 1, 1, 1, 1).getValue());
             const userID = this.dataSheet.getRange(i + j + k + 1, 12, 1, 1).getValue();
+            const twitterSchedule = this.dataSheet.getRange(i + j + k + 1, 15, 1, 1).getValue();
 
             const history: string[] = [];
 
             if (userID) {
               if (this.getTwitterChange(userID, newID)) {
-                history.push(group, twitterID, twitterName, '変更', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
+                history.push(
+                  group,
+                  twitterID,
+                  twitterName,
+                  twitterSchedule,
+                  '変更',
+                  dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
+                );
                 if (this.common.nameGroupMatch(twitterName, group)) {
                   client.postTweet('【ユーザー名変更】' + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
                 } else {
@@ -154,7 +170,14 @@ export class CheckAccount {
                 this.dataSheet.getRange(i + j + k + 1, 6, 1, 1).setValue(newID[0]);
                 newID = [];
               } else {
-                history.push(group, twitterID, twitterName, '削除', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
+                history.push(
+                  group,
+                  twitterID,
+                  twitterName,
+                  twitterSchedule,
+                  '削除',
+                  dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
+                );
                 if (this.common.nameGroupMatch(twitterName, group)) {
                   client.postTweet('【アカウント削除】' + twitterName + ' ' + twitterID);
                 } else {
@@ -164,7 +187,14 @@ export class CheckAccount {
                 this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
               }
             } else {
-              history.push(group, twitterID, twitterName, '不明', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
+              history.push(
+                group,
+                twitterID,
+                twitterName,
+                twitterSchedule,
+                '不明',
+                dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
+              );
               if (this.common.nameGroupMatch(twitterName, group)) {
                 client.postTweet('【アカウント所在不明】' + twitterName + ' ' + twitterID);
               } else {
@@ -174,7 +204,7 @@ export class CheckAccount {
               this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
             }
             this.historySheet.insertRowAfter(1);
-            this.historySheet.getRange(1, 1, 1, 5).setValues([history]);
+            this.historySheet.getRange(1, 1, 1, 6).setValues([history]);
           }
         }
       }

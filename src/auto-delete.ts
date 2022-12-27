@@ -67,10 +67,11 @@ export class AutoDelete {
     const group = this.common.nameReplace(this.dataSheet.getRange(deleteRow, 1).getValue());
     const twitterID = this.dataSheet.getRange(deleteRow, 6).getValue();
     const twitterName = this.dataSheet.getRange(deleteRow, 7).getValue();
+    const twitterSchedule = this.dataSheet.getRange(deleteRow, 15).getValue();
 
     this.dataSheet.deleteRow(deleteRow);
-    history.push(group, twitterID, twitterName, '削除済', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
+    history.push(group, twitterID, twitterName, twitterSchedule, '削除済', dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss'));
     this.historySheet.insertRowAfter(1);
-    this.historySheet.getRange(1, 1, 1, 5).setValues([history]);
+    this.historySheet.getRange(1, 1, 1, 6).setValues([history]);
   }
 }
