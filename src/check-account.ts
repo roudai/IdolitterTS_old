@@ -66,6 +66,7 @@ export class CheckAccount {
           const history: string[] = [];
           history.push(
             group,
+            '',
             twitterID[i],
             twitterName,
             twitterSchedule,
@@ -73,7 +74,7 @@ export class CheckAccount {
             dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
           );
           this.historySheet.insertRowAfter(1);
-          this.historySheet.getRange(2, 1, 1, 6).setValues([history]);
+          this.historySheet.getRange(2, 1, 1, 7).setValues([history]);
 
           if (this.common.nameGroupMatch(twitterName, group)) {
             client.postTweet('【アカウント復活】' + twitterName + ' ' + twitterID[i]);
@@ -155,6 +156,7 @@ export class CheckAccount {
                 history.push(
                   group,
                   twitterID,
+                  newID[0],
                   twitterName,
                   twitterSchedule,
                   '変更',
@@ -167,12 +169,13 @@ export class CheckAccount {
                     '【ユーザー名変更】' + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]
                   );
                 }
-                this.dataSheet.getRange(i + j + k + 1, 6, 1, 1).setValue(newID[0]);
+                this.dataSheet.getRange(i + j + k + 1, 7, 1, 1).setValue(newID[0]);
                 newID = [];
               } else {
                 history.push(
                   group,
                   twitterID,
+                  '',
                   twitterName,
                   twitterSchedule,
                   '削除',
@@ -190,6 +193,7 @@ export class CheckAccount {
               history.push(
                 group,
                 twitterID,
+                '',
                 twitterName,
                 twitterSchedule,
                 '不明',
@@ -204,7 +208,7 @@ export class CheckAccount {
               this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
             }
             this.historySheet.insertRowAfter(1);
-            this.historySheet.getRange(1, 1, 1, 6).setValues([history]);
+            this.historySheet.getRange(1, 1, 1, 7).setValues([history]);
           }
         }
       }
