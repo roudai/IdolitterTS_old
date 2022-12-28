@@ -79,7 +79,7 @@ export class AutoDelete {
       '削除済',
       dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
     );
-    this.historySheet.insertRowAfter(1);
-    this.historySheet.getRange(1, 1, 1, 7).setValues([history]);
+    this.historySheet.insertRows(2);
+    this.historySheet.getRange(2, 1, 1, 7).setValues([history]);
   }
 }

@@ -73,7 +73,7 @@ export class CheckAccount {
             '復活',
             dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
           );
-          this.historySheet.insertRowAfter(1);
+          this.historySheet.insertRows(2);
           this.historySheet.getRange(2, 1, 1, 7).setValues([history]);
 
           if (this.common.nameGroupMatch(twitterName, group)) {
@@ -169,7 +169,7 @@ export class CheckAccount {
                     '【ユーザー名変更】' + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]
                   );
                 }
-                this.dataSheet.getRange(i + j + k + 1, 7, 1, 1).setValue(newID[0]);
+                this.dataSheet.getRange(i + j + k + 1, 6, 1, 1).setValue(newID[0]);
                 newID = [];
               } else {
                 history.push(
@@ -207,8 +207,8 @@ export class CheckAccount {
               this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('不明');
               this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
             }
-            this.historySheet.insertRowAfter(1);
-            this.historySheet.getRange(1, 1, 1, 7).setValues([history]);
+            this.historySheet.insertRows(2);
+            this.historySheet.getRange(2, 1, 1, 7).setValues([history]);
           }
         }
       }
