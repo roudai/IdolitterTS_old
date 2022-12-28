@@ -13,6 +13,13 @@ export class GeneratePost {
   // アイドルを抽出する
   selectIdol() {
     const rand = Math.floor(Math.random() * (this.dataSheet?.getLastRow() - 1) + 2);
+    const privateId = this.dataSheet?.getRange(rand, 11).getValue();
+    const schedule = dayjs.dayjs(this.dataSheet?.getRange(rand, 15).getValue());
+    const today = dayjs.dayjs();
+    if (privateId === '非公開' || schedule.isBefore(today) || schedule.isSame(today)) {
+      // アカウントが非公開、または卒業・解散後の場合、再抽選
+      this.selectIdol();
+    }
 
     this.group = this.common.nameReplace(this.dataSheet?.getRange(rand, 1).getValue());
     this.twitterID = this.dataSheet?.getRange(rand, 6).getValue();
