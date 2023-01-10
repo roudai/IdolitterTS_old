@@ -8,7 +8,8 @@ export class DailyAnalysis {
 
   constructor(
     private dataSheet: GoogleAppsScript.Spreadsheet.Sheet,
-    private diffSheet: GoogleAppsScript.Spreadsheet.Sheet
+    private diffSheet: GoogleAppsScript.Spreadsheet.Sheet,
+    private diffFlag: boolean
   ) {}
 
   backupData() {
@@ -101,7 +102,7 @@ export class DailyAnalysis {
     }
 
     // 現データコピー
-    if (this.dataSheet.getRange(2, 7).getValue() != '') {
+    if (this.diffFlag === true && this.dataSheet.getRange(2, 7).getValue() != '') {
       this.dataSheet.getRange('A:A').copyTo(this.diffSheet.getRange('A:A'));
       this.dataSheet.getRange('F:I').copyTo(this.diffSheet.getRange('B:E'));
       this.diffSheet.getRange('A1:E1').setBackground('#adff2f');

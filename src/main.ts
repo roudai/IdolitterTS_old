@@ -4,7 +4,6 @@ import { CheckError } from './check-error';
 import { AutoDelete } from './auto-delete';
 import { CheckAccount } from './check-account';
 import { DailyAnalysis } from './daily-analysis';
-import { CheckGroup } from './check-group';
 
 const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('アイドル一覧');
 const groupSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('グループ一覧');
@@ -49,7 +48,7 @@ function checkAccount() {
 // アカウント情報取得、データ集計、ランキングツイート
 function dailyAnalysis() {
   if (dataSheet !== null && diffSheet !== null) {
-    const dailyAnalysis = new DailyAnalysis(dataSheet, diffSheet);
+    const dailyAnalysis = new DailyAnalysis(dataSheet, diffSheet, true);
     dailyAnalysis.backupData();
     dailyAnalysis.sortData();
     dailyAnalysis.getAllInformation();
@@ -60,8 +59,8 @@ function dailyAnalysis() {
 }
 
 function checkGroup() {
-  if (groupSheet !== null) {
-    const checkGroup = new CheckGroup(groupSheet);
+  if (groupSheet !== null && diffSheet !== null) {
+    const checkGroup = new DailyAnalysis(groupSheet, diffSheet, false);
     checkGroup.sortData();
     checkGroup.getAllInformation();
   }
