@@ -4,8 +4,10 @@ import { CheckError } from './check-error';
 import { AutoDelete } from './auto-delete';
 import { CheckAccount } from './check-account';
 import { DailyAnalysis } from './daily-analysis';
+import { CheckGroup } from './check-group';
 
 const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('アイドル一覧');
+const groupSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('グループ一覧');
 const diffSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('取得差分');
 const historySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('履歴');
 
@@ -54,5 +56,13 @@ function dailyAnalysis() {
     dailyAnalysis.dailyAnalysis();
     dailyAnalysis.tweetRanking('tweet');
     dailyAnalysis.tweetRanking('follower');
+  }
+}
+
+function checkGroup() {
+  if (groupSheet !== null) {
+    const checkGroup = new CheckGroup(groupSheet);
+    checkGroup.sortData();
+    checkGroup.getAllInformation();
   }
 }
