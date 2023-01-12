@@ -7,7 +7,9 @@ export class Common {
     if (
       name.replace(/\s/g, '').includes(group.replace(/\s/g, '')) ||
       this.replaceFullToHalf(name).includes(this.replaceFullToHalf(group)) ||
-      name.replace('たち', '達').replace('...', '…').includes(group)
+      name.replace('たち', '達').replace('...', '…').includes(group) ||
+      name.replace('‐', '-').includes(group) ||
+      name.includes(group.replace('！', ''))
     ) {
       return true;
     }
