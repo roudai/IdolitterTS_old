@@ -36,6 +36,8 @@ export class DailyAnalysis {
   }
 
   getAllInformation() {
+    this.diffSheet.getRange('W1').setValue('集計中');
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const twitterInfo: any[] = [];
     let getNum: number;
@@ -250,6 +252,7 @@ export class DailyAnalysis {
       );
     this.diffSheet.getRangeList(['I1:N1', 'P1:U1']).setBackground('#ffd700');
     this.diffSheet.getRangeList(['I1:N1', 'P1:U1']).setFontWeight('bold');
+    this.diffSheet.getRange('W1').setValue('完了');
   }
 
   tweetRanking(type: string) {
