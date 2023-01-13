@@ -13,6 +13,7 @@ export class DailyAnalysis {
   ) {}
 
   backupData() {
+    this.diffSheet.getRange('W1').setValue('集計中');
     const sheet = SpreadsheetApp.getActiveSpreadsheet();
     const trashSheet = sheet.getSheetByName('アイドル一覧_' + dayjs.dayjs().subtract(1, 'day').format('YYYYMMDD'));
     const copySheet = sheet.getSheetByName('アイドル一覧_' + dayjs.dayjs().format('YYYYMMDD'));
@@ -36,8 +37,6 @@ export class DailyAnalysis {
   }
 
   getAllInformation() {
-    this.diffSheet.getRange('W1').setValue('集計中');
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const twitterInfo: any[] = [];
     let getNum: number;
