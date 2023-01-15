@@ -254,6 +254,15 @@ export class DailyAnalysis {
     this.diffSheet.getRange('W1').setValue('完了');
   }
 
+  tweetRankingPage() {
+    const today =
+      dayjs.dayjs().subtract(1, 'day').format('M月D日') +
+      '（' +
+      dayjs.dayjs().subtract(1, 'day').locale('ja').format('dd') +
+      '）';
+    client.postTweet(today + ' フォロワー数増・ツイート数ランキング https://idolitter.net/ranking/');
+  }
+
   tweetRanking(type: string) {
     const today =
       dayjs.dayjs().subtract(1, 'day').format('M月D日') +
