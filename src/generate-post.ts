@@ -44,9 +44,9 @@ export class GeneratePost {
     }
     if (this.common.nameGroupMatch(name, this.group)) {
       // 名前にグループ名が含まれる場合はグループ名は重ねてツイートしない
-      this.message = name + ' ' + tweet;
+      this.message = name + ' idolitter.net ' + tweet;
     } else {
-      this.message = name + ' | ' + this.group + ' ' + tweet;
+      this.message = name + ' | ' + this.group + ' idolitter.net ' + tweet;
     }
   }
 
