@@ -77,9 +77,11 @@ export class CheckAccount {
           this.historySheet.getRange(2, 1, 1, 7).setValues([history]);
 
           if (this.common.nameGroupMatch(twitterName, group)) {
-            client.postTweet('【アカウント復活】' + twitterName + ' ' + twitterID[i]);
+            client.postTweet('【アカウント復活】' + twitterName + ' ' + twitterID[i] + ' idolitter.net/history');
           } else {
-            client.postTweet('【アカウント復活】' + twitterName + ' (' + group + ') ' + twitterID[i]);
+            client.postTweet(
+              '【アカウント復活】' + twitterName + ' (' + group + ') ' + twitterID[i] + ' idolitter.net/history'
+            );
           }
         } else {
           // アカウントが存在しない場合、背景色を設定する
@@ -163,10 +165,20 @@ export class CheckAccount {
                   dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
                 );
                 if (this.common.nameGroupMatch(twitterName, group)) {
-                  client.postTweet('【ユーザー名変更】' + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0]);
+                  client.postTweet(
+                    '【ユーザー名変更】' + twitterName + ' ' + twitterID + ' ⇒ ' + newID[0] + ' idolitter.net/history'
+                  );
                 } else {
                   client.postTweet(
-                    '【ユーザー名変更】' + twitterName + ' (' + group + ') ' + twitterID + ' ⇒ ' + newID[0]
+                    '【ユーザー名変更】' +
+                      twitterName +
+                      ' (' +
+                      group +
+                      ') ' +
+                      twitterID +
+                      ' ⇒ ' +
+                      newID[0] +
+                      ' idolitter.net/history'
                   );
                 }
                 this.dataSheet.getRange(i + j + k + 1, 6, 1, 1).setValue(newID[0]);
@@ -182,9 +194,11 @@ export class CheckAccount {
                   dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
                 );
                 if (this.common.nameGroupMatch(twitterName, group)) {
-                  client.postTweet('【アカウント削除】' + twitterName + ' ' + twitterID);
+                  client.postTweet('【アカウント削除】' + twitterName + ' ' + twitterID + ' idolitter.net/history');
                 } else {
-                  client.postTweet('【アカウント削除】' + twitterName + ' (' + group + ') ' + twitterID);
+                  client.postTweet(
+                    '【アカウント削除】' + twitterName + ' (' + group + ') ' + twitterID + ' idolitter.net/history'
+                  );
                 }
                 this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('削除');
                 this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
@@ -200,9 +214,11 @@ export class CheckAccount {
                 dayjs.dayjs().format('YYYY/MM/DD HH:mm:ss')
               );
               if (this.common.nameGroupMatch(twitterName, group)) {
-                client.postTweet('【アカウント所在不明】' + twitterName + ' ' + twitterID);
+                client.postTweet('【アカウント所在不明】' + twitterName + ' ' + twitterID + ' idolitter.net/history');
               } else {
-                client.postTweet('【アカウント所在不明】' + twitterName + ' (' + group + ') ' + twitterID);
+                client.postTweet(
+                  '【アカウント所在不明】' + twitterName + ' (' + group + ') ' + twitterID + ' idolitter.net/history'
+                );
               }
               this.dataSheet.getRange(i + j + k + 1, 14, 1, 1).setValue('不明');
               this.dataSheet.getRange(i + j + k + 1, 1, 1, 15).setBackground('#00ffff');
