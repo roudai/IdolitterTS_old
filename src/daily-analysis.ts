@@ -260,7 +260,7 @@ export class DailyAnalysis {
       '（' +
       dayjs.dayjs().subtract(1, 'day').locale('ja').format('dd') +
       '）';
-    client.postTweet(today + ' フォロワー数増・ツイート数ランキング https://idolitter.net/ranking/');
+    client.postTweet(today + ' フォロワー増加数・ツイート数ランキング https://idolitter.net/ranking/');
   }
 
   tweetRanking(type: string) {
@@ -278,7 +278,7 @@ export class DailyAnalysis {
     let after: number[] = [];
     let increase: string[] = [];
     if (type == 'follower') {
-      title = '【' + today + 'フォロワー数増ランキング】' + '\n';
+      title = '【' + today + 'フォロワー増加数ランキング】' + '\n';
       group = this.diffSheet.getRange('I2:I30').getValues().flat();
       twitterId = this.diffSheet.getRange('J2:J30').getValues().flat();
       name = this.diffSheet.getRange('K2:K30').getValues().flat();
