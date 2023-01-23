@@ -121,7 +121,7 @@ export class DailyAnalysis {
     // ダミー情報の削除
     const dummyID = this.dataSheet.getRange(2, 7, this.lastRow, 1).getValues().flat();
     dummyID.map((value: string, i: number) => {
-      if (value === 'Idolitter') {
+      if (value === 'アイドリッター') {
         this.dataSheet.getRange(i + 2, 7, 1, 7).clearContent();
       }
     });
