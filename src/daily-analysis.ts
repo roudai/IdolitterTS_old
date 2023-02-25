@@ -4,6 +4,7 @@ import './dayjs';
 
 export class DailyAnalysis {
   private lastRow!: number;
+  private diffLastRow!: number;
   private common: Common = new Common();
 
   constructor(
@@ -33,6 +34,7 @@ export class DailyAnalysis {
       { column: 12, ascending: true },
     ]);
     this.lastRow = this.dataSheet.getLastRow();
+    this.diffLastRow = this.diffSheet.getLastRow();
     this.common.idFix(this.dataSheet, this.lastRow);
   }
 
@@ -235,6 +237,8 @@ export class DailyAnalysis {
 
     // 取得差分
     this.dataSheet.getRange('H:I').copyTo(this.diffSheet.getRange('F:G'));
+    // 異常データ修正
+    this.AnomalyDatafix();
     this.diffSheet
       .getRange('I1')
       .setValue(
@@ -401,6 +405,29 @@ export class DailyAnalysis {
     // リツイート数＋ライク数＋引用リツイートが一番多いツイートをリツイートする。ただし100未満の場合は何もしない。
     if (max_buzz >= 100) {
       client.createRetweet(PropertiesService.getScriptProperties().getProperty('twitterid'), buzz_tweetId);
+    }
+  }
+
+  AnomalyDatafix() {
+    const oldFollower: string[][] = this.diffSheet.getRange(1, 4, this.diffLastRow - 1, 1).getValues();
+    const newFollower: string[][] = this.diffSheet.getRange(1, 6, this.diffLastRow - 1, 1).getValues();
+    const TwitterIdList: string[][] = this.dataSheet.getRange(1, 6, this.lastRow - 1, 1).getValues();
+
+    for (let i = 1; i < this.diffLastRow - 1; i = i + 1) {
+      if (newFollower[i][0] === '' || oldFollower[i][0] === '') continue;
+      if (Number(newFollower[i][0]) / Number(oldFollower[i][0]) <= 0.9) {
+        // フォロワーが1割以上減った場合、旧フォロワー数に書き換える
+        const TwitterID = this.diffSheet.getRange(i + 1, 2).getValue();
+        console.log(TwitterID, oldFollower[i], newFollower[i]);
+        this.diffSheet.getRange(i + 1, 6).setValue(this.diffSheet.getRange(i + 1, 4).getValue());
+
+        for (let j = 1; j < this.lastRow - 1; j = j + 1) {
+          if (TwitterID === TwitterIdList[j][0]) {
+            // アイドル一覧シートの値を書き換える
+            this.dataSheet.getRange(j + 1, 8).setValue(this.diffSheet.getRange(i + 1, 4).getValue());
+          }
+        }
+      }
     }
   }
 }

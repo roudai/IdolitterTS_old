@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Common } from './common';
+import { DailyAnalysis } from './daily-analysis';
 
 function nameGroupMatchTest() {
   const common = new Common();
@@ -24,4 +25,14 @@ function nameGroupMatchTest() {
   console.log(common.nameGroupMatch('海まりん(のんふぃく)', nonfik));
   console.log(common.nameGroupMatch('永月十華（のんふぃく)', nonfik));
   console.log(common.nameGroupMatch('真白里帆（のんふぃく）', nonfik));
+}
+
+function AnomalyDatafixTest() {
+  const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('アイドル一覧');
+  const diffSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('取得差分');
+  if (dataSheet !== null && diffSheet !== null) {
+    const dailyAnalysis = new DailyAnalysis(dataSheet, diffSheet, true);
+    dailyAnalysis.sortData();
+    dailyAnalysis.AnomalyDatafix();
+  }
 }
